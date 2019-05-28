@@ -1,7 +1,7 @@
 # placenames-dataset
-place names dataset
+Place Names Dataset
 
 
 TODO
-Use Apache Licence
-complete this file
+. Use Apache Licence
+. complete this file
