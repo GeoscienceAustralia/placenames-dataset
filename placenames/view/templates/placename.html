@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <h1>Placename {{ id }}</h1>
+    <p><code>{{ uri }}</code></p>
+    <style>
+        dt {font-weight: bold;}
+    </style>
+    <dl>
+        <dt><a title="{{ hasName['comment'] }}" href="{{ hasName['uri'] }}">{{ hasName['label'] }}</a></dt>
+        <dd>{{ hasName['value'] }}</dd>
+        {%  if hasPronunciation is not none %}
+        <dt>pronunciation</dt>
+        <dd><em>"{{ hasPronunciation }}"</em></dd>
+        {%  endif %}
+        <dt>register</dt>
+        <dd><a href="{{ register['uri'] }}">{{ register['label'] }}</a></dd>
+        <!--
+        <dt>was named by</dt>
+        <dd><a href="{{ wasNamedBy['uri'] }}">{{ wasNamedBy['label'] }}</a></dd>
+        -->
+        <dt>has name formality</dt>
+        <dd><a href="{{ hasNameFormality['uri'] }}">{{ hasNameFormality['label'] }}</a></dd>
+        <dt>was named by</dt>
+        <dd><em>coming!</em></dd>
+        <dt>modified date</dt>
+        <dd>{{ modifiedDate.strftime('%Y-%m-%d %H:%M:%S') }}</dd>
+    </dl>
+    <p>
+        Alternative views and formats for this resource:
+    </p>
+    <ul>
+        <li><a href="?_view=alternates">Alternate Views</a></li>
+    </ul>
+{% endblock %}
