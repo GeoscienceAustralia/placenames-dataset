@@ -10,9 +10,10 @@ from pyldapi import Renderer, View
 
 class Placename(Renderer):
     """
-    This class represents an Address and methods in this class allow an Address to be loaded from the GNAF database
-    and to be exported in a number of formats including RDF, according to the 'GNAF Ontology' and an
-    expression of the Dublin Core ontology, HTML, XML in the form according to the AS4590 XML schema.
+    This class represents a placename and methods in this class allow a placename to be loaded from the GA placenames database
+    and to be exported in a number of formats including RDF, according to the 'PlaceNames Ontology'
+
+    [[and an expression of the Dublin Core ontology, HTML, XML in the form according to the AS4590 XML schema.]]??
     """
 
     def __init__(self, request, uri):
@@ -50,27 +51,27 @@ class Placename(Renderer):
                 'uri_id': 'aag'
             },
             'NSW': {
-                'label': 'Australian Antarctica Gazetteer',
+                'label': 'New South Wales',
                 'uri_id': 'aag'
             },
             'NT': {
-                'label': 'Australian Antarctica Gazetteer',
+                'label': 'Northern Territory',
                 'uri_id': 'aag'
             },
             'QLD': {
-                'label': 'Australian Antarctica Gazetteer',
+                'label': 'Queensland',
                 'uri_id': 'aag'
             },
             'SA': {
-                'label': 'Australian Antarctica Gazetteer',
+                'label': 'South Australia',
                 'uri_id': 'aag'
             },
             'TAS': {
-                'label': 'Australian Antarctica Gazetteer',
+                'label': 'Tasmania',
                 'uri_id': 'aag'
             },
             'VIC': {
-                'label': 'Australian Antarctica Gazetteer',
+                'label': 'Victoria',
                 'uri_id': 'aag'
             },
             'WA': {
@@ -125,7 +126,7 @@ class Placename(Renderer):
             'WA': {
                 'label': 'Western Australian Government',
                 'uri_id': 'wa'
-            }
+            }  # add the uri to the naming Authority
         }
 
     def render(self):
@@ -201,8 +202,9 @@ class Placename(Renderer):
 
 
 if __name__ == '__main__':
-    a = Address('GANSW703902211', focus=True)
-    print(a.export_rdf().decode('utf-8'))
+    # a = Address('GANSW703902211', focus=True)  # not functional because from GNAF - this is placenames
+    # print(a.export_rdf().decode('utf-8'))
 
-# has alias for which it can't get address subclass: GAACT715069724. Alias is GAACT718348352
-# GAACT718348352 has subclass UnknownVillaAddress
+    print('main process has not been built yet - when build it will test ask for a placename like the code Gnaf above')
+
+
