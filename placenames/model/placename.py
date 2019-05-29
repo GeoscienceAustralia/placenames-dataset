@@ -36,7 +36,8 @@ class Placename(Renderer):
             'comment': 'The Entity has a name (label) which is a text sting.',
             'value': None
         }
-
+        # setup a dictionary of gazetteers
+        #need to insert uri_id's to point to the authority though the naming authorities dictionary below
         gazetteers = {
             'AAD': {
                 'label': 'Australian Antarctica Gazetteer',
@@ -113,7 +114,7 @@ class Placename(Renderer):
             self.register['uri'] = 'http://linked.data.gov.au/dataset/placenames/gazetteer/' + str(placename[1])
             self.modifiedDate = placename[2]
 
-
+        # need to build this nameing Authorities dictionary out
         naming_authorities = {
             'ACT': {
                 'label': 'Australian Capital Territory',
@@ -127,20 +128,21 @@ class Placename(Renderer):
                 'label': 'Western Australian Government',
                 'uri_id': 'wa'
             }  # add the uri to the naming Authority
-        }
+        }  # add all states, territories and other naming bodies
 
+    # maybe should call this function something else - it seems to clash
     def render(self):
         if self.view == 'alternates':
-            return self._render_alternates_view()
+            return self._render_alternates_view()   # this view dosn't seem to exist - to be done?
         elif self.format in ['text/turtle', 'application/ld+json']:
-            return self.export_rdf()
+            return self.export_rdf()                # this one exists below
         else:  # default is HTML response: self.format == 'text/html':
-            return self.export_html()
+            return self.export_html()               # this one exists below
 
     def export_html(self):
-        return Response(
-            render_template(
-                'placename.html',
+        return Response(        # Response is a Flask class imported at the top of this script
+            render_template(     # render_template is also a Flask module
+                'placename.html',   # uses the placenames.html template send all this data to it.
                 id=self.id,
                 hasName=self.hasName,
                 hasPronunciation=self.hasPronunciation,
@@ -157,12 +159,12 @@ class Placename(Renderer):
         # return NotImplementedError("HTML representation of View '{}' is not implemented.".format(view))
 
     def export_rdf(self):
-        g = Graph()
+        g = Graph()  # make instance of a RDF graph
 
-        PN = Namespace('http://linked.data.gov.au/def/placename/')
+        PN = Namespace('http://linked.data.gov.au/def/placename/')   #rdf neamespace declaration
         g.bind('pn', PN)
 
-        me = URIRef(self.uri)
+        me = URIRef(self.uri)   # URIRef is a RDF class
 
         g.add((me, RDF.type, URIRef('http://linked.data.gov.au/def/placename/PlaceName')))  # PN.PlaceName))
         g.add((me, PN.hasName, Literal(self.hasName['value'], datatype=XSD.string)))
@@ -198,7 +200,8 @@ class Placename(Renderer):
             'name': 'Geocoded Address ' + self.id
         }
 
-        return json.dumps(data, cls=DecimalEncoder)
+        #return json.dumps(data, cls=DecimalEncoder) #
+        return json.dumps(data, cls=decimal)  # changed to suit import
 
 
 if __name__ == '__main__':
