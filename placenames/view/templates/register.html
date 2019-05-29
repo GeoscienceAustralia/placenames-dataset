@@ -19,7 +19,7 @@
                     <ul>
                     {%- for item in register_items -%}
                         {%- if item is not string %}
-                        <li><a href="{{ item[0] }}">{{ item[1] }}</a></li>
+                        <li><a href="{{ item[0] }}">{{ item[0] }} - {{ item[1] }}</a></li>
                         {%- else %}
                         <li><a href="{{ item }}">{{ item.split('#')[-1].split('/')[-1] }}</a></li>
                         {%- endif %}
