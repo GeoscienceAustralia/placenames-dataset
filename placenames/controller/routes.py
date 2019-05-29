@@ -18,8 +18,8 @@ def placenames():
         # get the register length from the online DB
         no_of_items = conf.db_select('SELECT COUNT(*) FROM "PLACENAMES";')[0][0]
 
-        page = request.values.get('page') if request.values.get('page') is not None else 1
-        per_page = request.values.get('per_page') if request.values.get('per_page') is not None else 30
+        page = int(request.values.get('page')) if request.values.get('page') is not None else 1
+        per_page = int(request.values.get('per_page')) if request.values.get('per_page') is not None else 30
         offset = (page - 1) * per_page
         items = []
         q = '''
