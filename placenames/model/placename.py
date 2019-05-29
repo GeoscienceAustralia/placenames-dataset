@@ -19,7 +19,7 @@ class Placename(Renderer):
     def __init__(self, request, uri):
         views = {
             'pn': View(
-                'Plane Names View',
+                'Place Names View',
                 'This view is the standard view delivered by the Place Names dataset in accordance with the '
                 'Place Names Profile',
                 ['text/html', 'text/turtle', 'application/ld+json'],
@@ -130,10 +130,10 @@ class Placename(Renderer):
             }  # add the uri to the naming Authority
         }  # add all states, territories and other naming bodies
 
-    # maybe should call this function something else - it seems to clash
+    # maybe should call this function something else - it seems to clash ie Overrides the method in Renderer
     def render(self):
         if self.view == 'alternates':
-            return self._render_alternates_view()   # this view dosn't seem to exist - to be done?
+            return self._render_alternates_view()   # this function is in Renderer
         elif self.format in ['text/turtle', 'application/ld+json']:
             return self.export_rdf()                # this one exists below
         else:  # default is HTML response: self.format == 'text/html':
@@ -164,8 +164,9 @@ class Placename(Renderer):
         PN = Namespace('http://linked.data.gov.au/def/placename/')   #rdf neamespace declaration
         g.bind('pn', PN)
 
-        me = URIRef(self.uri)   # URIRef is a RDF class
 
+        #loop through the next 3 lines to get subject, predicate, object for the triple store adding each time??
+        me = URIRef(self.uri)   # URIRef is a RDF class
         g.add((me, RDF.type, URIRef('http://linked.data.gov.au/def/placename/PlaceName')))  # PN.PlaceName))
         g.add((me, PN.hasName, Literal(self.hasName['value'], datatype=XSD.string)))
 
@@ -179,8 +180,8 @@ class Placename(Renderer):
                 g.serialize(format='json-ld'),
                 mimetype='application/ld+json'
             )
-
-    def export_schemaorg(self):
+    # for schema dot org format
+    def export_schemaorg(self):  #this is all for GNAF - needs to adapted to Placenames
         data = {
             '@context': 'http://schema.org',
             '@type': 'Place',
@@ -188,13 +189,13 @@ class Placename(Renderer):
                 '@type': 'PostalAddress',
                 'streetAddress': self.address_string.split(',')[0],
                 'addressLocality': self.locality_name,
-                'addressRegion': self.state_prefLabel,
+                'addressRegion': self.state_prefLabel,    #change these for placenames attributes
                 'postalCode': self.postcode,
                 'addressCountry': 'AU'
             },
             'geo': {
                 '@type': 'GeoCoordinates',
-                'latitude': self.latitude,
+                'latitude': self.latitude,                # keep this for placenames?
                 'longitude': self.longitude
             },
             'name': 'Geocoded Address ' + self.id
