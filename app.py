@@ -1,12 +1,13 @@
 import logging
 from flask import Flask
 from placenames.controller import routes
-import pyldapi
 import placenames._conf as conf
+from pprint import pformat
 
 app = Flask(__name__, template_folder=conf.TEMPLATES_DIR, static_folder=conf.STATIC_DIR)
 app.register_blueprint(routes.routes)
 
+logger = logging.getLogger('app')
 
 # run the Flask app
 if __name__ == '__main__':
@@ -16,6 +17,13 @@ if __name__ == '__main__':
                         format='%(asctime)s %(levelname)s %(filename)s:%(lineno)s %(message)s')
 
     # pyldapi.setup(app, conf.APP_DIR, conf.DATA_URI_PREFIX)
+    
+    # Write all upper-case keys with string values in conf to log file
+    logger.debug('conf = {}'.format(pformat({key: value 
+                          for key, value in conf.__dict__.items() 
+                          if key == key.upper()
+                          and type(value) == str}
+                          )))
 
     # run the Flask app
     app.run(debug=conf.DEBUG, threaded=True, use_reloader=False)
