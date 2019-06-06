@@ -6,6 +6,7 @@ from psycopg2 import sql
 import json
 import decimal
 from pyldapi import Renderer, View
+from .gazetteer import GAZETTEERS
 
 
 class Placename(Renderer):
@@ -35,50 +36,6 @@ class Placename(Renderer):
             'label': 'has name',
             'comment': 'The Entity has a name (label) which is a text sting.',
             'value': None
-        }
-        # setup a dictionary of gazetteers
-        #need to insert uri_id's to point to the authority though the naming authorities dictionary below
-        gazetteers = {
-            'AAD': {
-                'label': 'Australian Antarctica Gazetteer',
-                'uri_id': 'aag'
-            },
-            'ACT': {
-                'label': 'Australian Antarctica Gazetteer',
-                'uri_id': 'aag'
-            },
-            'AHO': {
-                'label': 'Australian Antarctica Gazetteer',
-                'uri_id': 'aag'
-            },
-            'NSW': {
-                'label': 'New South Wales',
-                'uri_id': 'aag'
-            },
-            'NT': {
-                'label': 'Northern Territory',
-                'uri_id': 'aag'
-            },
-            'QLD': {
-                'label': 'Queensland',
-                'uri_id': 'aag'
-            },
-            'SA': {
-                'label': 'South Australia',
-                'uri_id': 'aag'
-            },
-            'TAS': {
-                'label': 'Tasmania',
-                'uri_id': 'aag'
-            },
-            'VIC': {
-                'label': 'Victoria',
-                'uri_id': 'aag'
-            },
-            'WA': {
-                'label': 'Western Australia\'s Place Names Gazetteer',
-                'uri_id': 'wa'
-            }
         }
 
         self.register = {
