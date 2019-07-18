@@ -24,7 +24,12 @@
 
 
         <dt>Display on a Map:</dt>
-        <dd><a href="{{ hasMap['uri'] }}">{{ hasMap['label'] }}</a></dd>
+        <iframe id="inlineFrameExample"
+            title="Inline Frame Example"
+            width="1150"
+            height="250"
+            src="{{ hasMap['uri'] }}">
+        </iframe>
 
         <dt>Position Lat Long:</dt>
         <dd><em>{{ latitude, longitude }}</em></dd>

@@ -1,10 +1,11 @@
 from flask import Blueprint, request, redirect, url_for, Response, render_template, send_file
 import flask
-from placename import Placename
+from placenames.model.placename import Placename
 from pyldapi import RegisterRenderer
 import placenames._conf as conf
 
 routes = Blueprint('controller', __name__)
+
 
 
 @routes.route('/', strict_slashes=True)
