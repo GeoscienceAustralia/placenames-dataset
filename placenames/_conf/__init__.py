@@ -24,11 +24,7 @@ DEBUG = True
 
 def db_select(q):
     try:
-        conn = psycopg2.connect(host='fsdf-placenames.cx6rhroaeuxv.ap-southeast-2.rds.amazonaws.com',
-                                port='5432',
-                                dbname='fsdf_placenames',
-                                user='placenames_readonly',
-                                password='Bd&wlOF!')
+        conn = psycopg2.connect
 
 
 
