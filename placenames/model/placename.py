@@ -192,10 +192,10 @@ class Placename(Renderer):
 
 
             # create a new map object  # ==========================================================
-            m = foliumOLD.Map(location=[self.y, self.x], zoom_start=10)
+            m = folium.Map(location=[self.y, self.x], zoom_start=10)
             tooltip = 'Click for more information'
             # create markers
-            foliumOLD.Marker([self.y, self.x],
+            folium.Marker([self.y, self.x],
                              #popup='<strong>"self.hasName"</strong>',
                              popup = self.hasName['value'],
                              tooltip=tooltip).add_to(m),
@@ -205,7 +205,8 @@ class Placename(Renderer):
             #               tooltip=tooltip).add_to(m),
             # generate and save map
             # m.save(r'C:\Users\Joseph\PycharmProjects\pyLD_API\PlacenamesAPI\placenames\view\templates\map.html')
-            m.save(r'C:\Users\u82871\PycharmProjects\PlacenamesAPI\placenames\view\templates\map.html')
+            #m.save(r'C:/Users/u82871/PycharmProjects/placenames-dataset\placenames\view\templates\map.html')
+            m.save(r'/placenames-dataset/placenames/view/templates/map.html')
             # ====================================================================================
 
 

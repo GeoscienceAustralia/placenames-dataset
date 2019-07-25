@@ -4,8 +4,8 @@ from placename import Placename
 from pyldapi import RegisterRenderer
 import placenames._conf as conf
 
-routes = Blueprint('controller', __name__)
-
+#routes = Blueprint('controller', __name__)
+routes = flask.Flask(__name__)
 
 @routes.route('/', strict_slashes=True)
 def home():
@@ -52,9 +52,9 @@ def map():
     print('map here')
 
 
-@routes.route('/view/templates/map.html')
+@routes.route('/placenames/view/templates/map.html')
 def show_map():
-    return flask.send_file('placenames/view/templates/map.html')
+    return flask.send_file('placenames-dataset/placenames/view/templates/map.html')
 
 
 
@@ -65,6 +65,7 @@ def placename(placename_id):
 
 
 
-
+if __name__ == 'main':
+    routes.run(debug=True)
 
 

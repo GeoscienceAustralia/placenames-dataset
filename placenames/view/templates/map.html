@@ -7,11 +7,11 @@
             L_DISABLE_3D = false;
         </script>
     
-    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.5.1/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.4.0/dist/leaflet.js"></script>
     <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.5.1/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.4.0/dist/leaflet.css"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"/>
@@ -23,7 +23,7 @@
             <meta name="viewport" content="width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
             <style>
-                #map_e7712eb3058e4dd9805092ca46ee67b2 {
+                #map_9f7ea73139414073af26a235a9ee9dc6 {
                     position: relative;
                     width: 100.0%;
                     height: 100.0%;
@@ -35,15 +35,15 @@
 </head>
 <body>    
     
-            <div class="folium-map" id="map_e7712eb3058e4dd9805092ca46ee67b2" ></div>
+            <div class="folium-map" id="map_9f7ea73139414073af26a235a9ee9dc6" ></div>
         
 </body>
 <script>    
     
-            var map_e7712eb3058e4dd9805092ca46ee67b2 = L.map(
-                "map_e7712eb3058e4dd9805092ca46ee67b2",
+            var map_9f7ea73139414073af26a235a9ee9dc6 = L.map(
+                "map_9f7ea73139414073af26a235a9ee9dc6",
                 {
-                    center: [-33.88166667, 150.0344444],
+                    center: [-66.16388889, 100.3018889],
                     crs: L.CRS.EPSG3857,
                     zoom: 10,
                     zoomControl: true,
@@ -55,32 +55,32 @@
 
         
     
-            var tile_layer_8c8f78259a034044810be93816280ee7 = L.tileLayer(
+            var tile_layer_f36cf2c527dd4c8dbf59d2ed2646c043 = L.tileLayer(
                 "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
                 {"attribution": "Data by \u0026copy; \u003ca href=\"http://openstreetmap.org\"\u003eOpenStreetMap\u003c/a\u003e, under \u003ca href=\"http://www.openstreetmap.org/copyright\"\u003eODbL\u003c/a\u003e.", "detectRetina": false, "maxNativeZoom": 18, "maxZoom": 18, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
-            ).addTo(map_e7712eb3058e4dd9805092ca46ee67b2);
+            ).addTo(map_9f7ea73139414073af26a235a9ee9dc6);
         
     
-            var marker_1ca75fca6ccf49049528010765a5f233 = L.marker(
-                [-33.88166667, 150.0344444],
+            var marker_6841db06674242a6b706c95f3ece0661 = L.marker(
+                [-66.16388889, 100.3018889],
                 {}
-            ).addTo(map_e7712eb3058e4dd9805092ca46ee67b2);
+            ).addTo(map_9f7ea73139414073af26a235a9ee9dc6);
         
     
-        var popup_b6ae1693c9334cb9a311720cc64bf1f6 = L.popup({"maxWidth": "100%"});
+        var popup_a9c4641f97ba4c20ad5178d7ed119615 = L.popup({"maxWidth": "100%"});
 
         
-            var html_e94d0b0be9194516a106db0da7357fdd = $(`<div id="html_e94d0b0be9194516a106db0da7357fdd" style="width: 100.0%; height: 100.0%;">Budthingeroo (Survey marker)</div>`)[0];
-            popup_b6ae1693c9334cb9a311720cc64bf1f6.setContent(html_e94d0b0be9194516a106db0da7357fdd);
+            var html_d62be01ba228450094323ea8036610cf = $(`<div id="html_d62be01ba228450094323ea8036610cf" style="width: 100.0%; height: 100.0%;">Taylor Islands (Island)</div>`)[0];
+            popup_a9c4641f97ba4c20ad5178d7ed119615.setContent(html_d62be01ba228450094323ea8036610cf);
         
 
-        marker_1ca75fca6ccf49049528010765a5f233.bindPopup(popup_b6ae1693c9334cb9a311720cc64bf1f6)
+        marker_6841db06674242a6b706c95f3ece0661.bindPopup(popup_a9c4641f97ba4c20ad5178d7ed119615)
         ;
 
         
     
     
-            marker_1ca75fca6ccf49049528010765a5f233.bindTooltip(
+            marker_6841db06674242a6b706c95f3ece0661.bindTooltip(
                 `<div>
                      Click for more information
                  </div>`,
