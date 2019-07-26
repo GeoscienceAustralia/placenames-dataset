@@ -49,12 +49,16 @@ def placenames():
 
 @routes.route('/map/')
 def map():
-    print('map here')
+    try:
+        return render_template('map.html')
+    except:
+        print('map route error')
+
 
 
 @routes.route('/view/templates/map.html')
 def show_map():
-    return flask.send_file('placenames/view/templates/map.html')
+    return flask.send_file(r"//prod.lan/active/ops/nlib/NLI Reform Project/Place Names Linked Data Project/placenames-dataset/placenames/view/templates/map.html")
 
 
 

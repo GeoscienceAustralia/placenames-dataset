@@ -8,10 +8,11 @@ import folium
 import placenames._conf as conf
 from pyldapi import Renderer, View
 from rdflib import Graph, URIRef, RDF, XSD, Namespace, Literal
+import numpy
 
 
 #import branca
-
+print('starting placenames')
 
 class Placename(Renderer):
     """
@@ -22,6 +23,7 @@ class Placename(Renderer):
     """
 
     def __init__(self, request, uri):
+        print('initialised placenames')
         views = {
             'pn': View(
                 'Place Names View',
@@ -192,10 +194,10 @@ class Placename(Renderer):
 
 
             # create a new map object  # ==========================================================
-            m = foliumOLD.Map(location=[self.y, self.x], zoom_start=10)
+            m = folium.Map(location=[self.y, self.x], zoom_start=10)
             tooltip = 'Click for more information'
             # create markers
-            foliumOLD.Marker([self.y, self.x],
+            folium.Marker([self.y, self.x],
                              #popup='<strong>"self.hasName"</strong>',
                              popup = self.hasName['value'],
                              tooltip=tooltip).add_to(m),
@@ -205,7 +207,7 @@ class Placename(Renderer):
             #               tooltip=tooltip).add_to(m),
             # generate and save map
             # m.save(r'C:\Users\Joseph\PycharmProjects\pyLD_API\PlacenamesAPI\placenames\view\templates\map.html')
-            m.save(r'C:\Users\u82871\PycharmProjects\PlacenamesAPI\placenames\view\templates\map.html')
+            m.save(r'\\prod.lan\active\ops\nlib\NLI Reform Project\Place Names Linked Data Project\placenames-dataset\placenames\view\templates\map.html')
             # ====================================================================================
 
 

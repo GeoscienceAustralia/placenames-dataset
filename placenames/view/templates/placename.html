@@ -23,8 +23,9 @@
         {%  endif %}
 
 
-        <dt>Display on a Map:</dt>
+        <dt>Display on a Map (refresh page if needed):</dt>
         <dd><a href="{{ hasMap['uri'] }}">{{ hasMap['label'] }}</a></dd>
+        <dd>{% include 'map.html' %}</dd>
 
         <dt>Position Lat Long:</dt>
         <dd><em>{{ latitude, longitude }}</em></dd>
