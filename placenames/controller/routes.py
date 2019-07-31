@@ -1,6 +1,6 @@
 from flask import Blueprint, request, redirect, url_for, Response, render_template, send_file
 import flask
-from placename import Placename
+#from placename import placename
 from pyldapi import RegisterRenderer
 import placenames._conf as conf
 
@@ -47,9 +47,9 @@ def placenames():
         no_of_items
     ).render()
 
-@routes.route('/map/')
-def map():
-    print('map here')
+#@routes.route('/map/')
+#def map():
+#    print('map here')
 
 
 @routes.route('/view/templates/map.html')
