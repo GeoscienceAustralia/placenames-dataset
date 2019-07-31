@@ -10,6 +10,9 @@ from pyldapi import Renderer, View
 from rdflib import Graph, URIRef, RDF, XSD, Namespace, Literal
 
 
+import tempfile
+
+
 #import branca
 
 
@@ -192,10 +195,10 @@ class Placename(Renderer):
 
 
             # create a new map object  # ==========================================================
-            m = foliumOLD.Map(location=[self.y, self.x], zoom_start=10)
+            m = folium.Map(location=[self.y, self.x], zoom_start=10)
             tooltip = 'Click for more information'
             # create markers
-            foliumOLD.Marker([self.y, self.x],
+            folium.Marker([self.y, self.x],
                              #popup='<strong>"self.hasName"</strong>',
                              popup = self.hasName['value'],
                              tooltip=tooltip).add_to(m),
@@ -205,7 +208,11 @@ class Placename(Renderer):
             #               tooltip=tooltip).add_to(m),
             # generate and save map
             # m.save(r'C:\Users\Joseph\PycharmProjects\pyLD_API\PlacenamesAPI\placenames\view\templates\map.html')
-            m.save(r'C:\Users\u82871\PycharmProjects\PlacenamesAPI\placenames\view\templates\map.html')
+           # map_temp = m.save(tempfile.TemporaryFile())
+            print("tell")
+            #print(map_temp)
+            #print("tell: " + str(map_temp.tell()))
+            m.save(r'C:\Users\u62231\Local_Repos\placenames-dataset_ga\placenames\view\templates\map.html')
             # ====================================================================================
 
 
