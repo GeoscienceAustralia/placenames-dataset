@@ -1,6 +1,6 @@
 from flask import Blueprint, request, redirect, url_for, Response, render_template, send_file
 import flask
-#from placename import placename
+from placenames.model.placename import Placename
 from pyldapi import RegisterRenderer
 import placenames._conf as conf
 
