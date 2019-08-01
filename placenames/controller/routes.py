@@ -46,7 +46,8 @@ def placenames():
         'A register of Place Names',
         items,
         ['http://linked.data.gov.au/def/placenames/PlaceName'],
-        no_of_items
+        no_of_items,
+        per_page=per_page
     ).render()
 
 #@routes.route('/map/')
