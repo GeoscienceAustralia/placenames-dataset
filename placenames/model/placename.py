@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import decimal
 import json
-
+import os
 from flask import render_template, Response
 
 import folium
@@ -191,30 +191,6 @@ class Placename(Renderer):
             print('name auth', naming_authorities[str(placename[1])]['label'])
 
             self.modifiedDate = placename[2]
-
-
-
-            # create a new map object  # ==========================================================
-            m = folium.Map(location=[self.y, self.x], zoom_start=10)
-            tooltip = 'Click for more information'
-            # create markers
-            folium.Marker([self.y, self.x],
-                             #popup='<strong>"self.hasName"</strong>',
-                             popup = self.hasName['value'],
-                             tooltip=tooltip).add_to(m),
-
-            # folium.Marker([-66.24, 110.57],
-            #               popup='<strong>Location One</strong>',
-            #               tooltip=tooltip).add_to(m),
-            # generate and save map
-            # m.save(r'C:\Users\Joseph\PycharmProjects\pyLD_API\PlacenamesAPI\placenames\view\templates\map.html')
-           # map_temp = m.save(tempfile.TemporaryFile())
-            print("tell")
-            #print(map_temp)
-            #print("tell: " + str(map_temp.tell()))
-            m.save(r'C:\Users\u62231\Local_Repos\placenames-dataset_ga\placenames\view\templates\map.html')
-            # ====================================================================================
-
 
 
     # maybe should call this function something else - it seems to clash ie Overrides the method in Renderer

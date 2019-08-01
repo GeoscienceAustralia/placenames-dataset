@@ -20,8 +20,8 @@ file = os.path.join(directory, "secrets.yml")
 PLACE_NAMES_DB_CON_DICT = yaml.safe_load(open(file))
 
 if PLACE_NAMES_DB_CON_DICT is None:
-      print('You must set an environment variable for the DB connection called PLACE_NAMES_DB_CON')
-      exit()
+    print('You must set up a secrets.yml file containing the DB login credentials')
+    exit()
 
 
 JURISDICTION_INSTANCE_URI_STEM = 'http://localhost:5000/jurisdiction/'
