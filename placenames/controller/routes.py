@@ -55,33 +55,23 @@ def placenames():
 
 
 @routes.route('/map')
-def map():
+def show_map():
     '''
     Function to render a map around the specified coordinates
     '''
     name = request.values.get('name')
     x = float(request.values.get('x'))
     y = float(request.values.get('y'))
-    # create a new map object  # ==========================================================
+    
+    # create a new map object  
     folium_map = folium.Map(location=[y, x], zoom_start=10)
     tooltip = 'Click for more information'
     # create markers
     folium.Marker([y, x],
-                     #popup='<strong>"self.hasName"</strong>',
-                     popup = name,
-                     tooltip=tooltip).add_to(folium_map),
+                  popup = name,
+                  tooltip=tooltip).add_to(folium_map),
 
-    # folium.Marker([-66.24, 110.57],
-    #               popup='<strong>Location One</strong>',
-    #               tooltip=tooltip).add_to(m),
-    # generate and save map
-    # m.save(r'C:\Users\Joseph\PycharmProjects\pyLD_API\PlacenamesAPI\placenames\view\templates\map.html')
-    # map_temp = m.save(tempfile.TemporaryFile())
-    print("tell")
-    #print(map_temp)
-    #print("tell: " + str(map_temp.tell()))
     return folium_map.get_root().render()
-    # ====================================================================================
 
 
 

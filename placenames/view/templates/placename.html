@@ -28,7 +28,7 @@
             title="Map for {{ hasName['value'] }}"
             width="1150"
             height="250"
-            src="{{ url_for('controller.map') }}?name={{ hasName['value']|urlencode }}&x={{ longitude }}&y={{ latitude }}">
+            src="{{ url_for('controller.show_map') }}?name={{ hasName['value']|urlencode }}&x={{ longitude }}&y={{ latitude }}">
 
         </iframe>
 
