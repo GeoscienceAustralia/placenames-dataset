@@ -24,11 +24,12 @@
 
 
         <dt>Display on a Map:</dt>
-        <iframe id="inlineFrameExample"
-            title="Inline Frame Example"
+        <iframe id="inlineFrameMap"
+            title="Map for {{ hasName['value'] }}"
             width="1150"
             height="250"
-            src="/map?name={{ hasName }}&x={{ longitude }}&y={{ latitude }}">
+            src="{{ url_for('controller.map') }}?name={{ hasName['value']|urlencode }}&x={{ longitude }}&y={{ latitude }}">
+
         </iframe>
 
         <dt>Position Lat Long:</dt>

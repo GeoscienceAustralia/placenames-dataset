@@ -55,7 +55,10 @@ def placenames():
 
 
 @routes.route('/map')
-def show_map():
+def map():
+    '''
+    Function to render a map around the specified coordinates
+    '''
     name = request.values.get('name')
     x = float(request.values.get('x'))
     y = float(request.values.get('y'))
