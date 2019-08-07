@@ -1,18 +1,19 @@
 # -*- coding: utf-8 -*-
 import decimal
 import json
-
+import os
 from flask import render_template, Response
 
 import folium
 import placenames._conf as conf
 from pyldapi import Renderer, View
 from rdflib import Graph, URIRef, RDF, XSD, Namespace, Literal
-import numpy
+
+from .gazetteer import GAZETTEERS
 
 
 #import branca
-print('starting placenames')
+
 
 class Placename(Renderer):
     """
@@ -23,7 +24,6 @@ class Placename(Renderer):
     """
 
     def __init__(self, request, uri):
-        print('initialised placenames')
         views = {
             'pn': View(
                 'Place Names View',
@@ -43,52 +43,11 @@ class Placename(Renderer):
             'comment': 'The Entity has a name (label) which is a text sting.',
             'value': None
         }
-        # setup a dictionary of gazetteers
+        # Use imported dictionary of gazetteers
         #need to insert uri_id's to point to the authority though the naming authorities dictionary below
-        gazetteers = {
-            'AAD': {
-                'label': 'Australian Antarctic Division',
-                'uri_id': 'https://data.aad.gov.au/aadc/gaz/'
-            },
-            'ACT': {
-                'label': 'Australian Capital Territory Government',
-                'uri_id': 'http://app.actmapi.act.gov.au/actmapi/index.html?viewer=pn'
-            },
-            'AHO': {
-                'label': 'Australian Hydrographic Office',
-                'uri_id': 'http://www.hydro.gov.au/'
-            },
-            'NSW': {
-                'label': 'New South Wales Government',
-                'uri_id': 'http://www.gnb.nsw.gov.au/place_naming/placename_search'
-            },
-            'NT': {
-                'label': 'Northern Territory Government',
-                'uri_id': 'https://www.ntlis.nt.gov.au/placenames/'
-            },
-            'QLD': {
-                'label': 'Queensland Government',
-                'uri_id': 'https://www.dnrm.qld.gov.au/qld/environment/land/place-names/search'
-            },
-            'SA': {
-                'label': 'South Australia Government',
-                'uri_id': 'https://www.sa.gov.au/topics/planning-and-property/planning-and-land-management/suburb-road-and-place-names/place-names-search'
-            },
-            'TAS': {
-                'label': 'Tasmania Government',
-                'uri_id': 'https://www.placenames.tas.gov.au/#p0'
-            },
-            'VIC': {
-                'label': 'Victoria Government',
-                'uri_id': 'https://maps.land.vic.gov.au/lassi/VicnamesUI.jsp'
-            },
-            'WA': {
-                'label': 'Western Australia Government',
-                'uri_id': 'https://www0.landgate.wa.gov.au/maps-and-imagery/wa-geographic-names'
-            }
-        }
-        print(gazetteers['AAD']['label'])
-        print(gazetteers['AAD']['uri_id'])
+
+        #print(GAZETTEERS['AAD']['label'])
+        #print(GAZETTEERS['AAD']['uri_id'])
 
         # need to build this naming Authorities dictionary out
         naming_authorities = {
@@ -174,42 +133,22 @@ class Placename(Renderer):
         for placename in conf.db_select(q):
             # for item in placename:
             #     print(item)
-            print(placename)
-            print(placename[0], placename[1], placename[2], placename[3], placename[4], placename[5]), placename[6], placename[7]
+            #print(placename)
+            #print(placename[0], placename[1], placename[2], placename[3], placename[4], placename[5]), placename[6], placename[7]
             self.y = placename[6]
             self.x = placename[7]
 
             self.hasName['value'] = str(placename[0]) + " (" + str(placename[3]).capitalize() + ")"
 
-            self.wasNamedBy['label'] = (gazetteers[str(placename[1])]['label'])
+            self.wasNamedBy['label'] = (GAZETTEERS[str(placename[1])]['label'])
 
-            self.register['uri'] = (gazetteers[str(placename[1])]['uri_id'])
+            self.register['uri'] = (GAZETTEERS[str(placename[1])]['uri_id'])
 
             #self.register['uri'] = 'http://linked.data.gov.au/dataset/placenames/gazetteer/' + str(placename[1])
 
-            print('name auth', naming_authorities[str(placename[1])]['label'])
+            #print('name auth', naming_authorities[str(placename[1])]['label'])
 
             self.modifiedDate = placename[2]
-
-
-
-            # create a new map object  # ==========================================================
-            m = folium.Map(location=[self.y, self.x], zoom_start=10)
-            tooltip = 'Click for more information'
-            # create markers
-            folium.Marker([self.y, self.x],
-                             #popup='<strong>"self.hasName"</strong>',
-                             popup = self.hasName['value'],
-                             tooltip=tooltip).add_to(m),
-
-            # folium.Marker([-66.24, 110.57],
-            #               popup='<strong>Location One</strong>',
-            #               tooltip=tooltip).add_to(m),
-            # generate and save map
-            # m.save(r'C:\Users\Joseph\PycharmProjects\pyLD_API\PlacenamesAPI\placenames\view\templates\map.html')
-            m.save(r'\\prod.lan\active\ops\nlib\NLI Reform Project\Place Names Linked Data Project\placenames-dataset\placenames\view\templates\map.html')
-            # ====================================================================================
-
 
 
     # maybe should call this function something else - it seems to clash ie Overrides the method in Renderer

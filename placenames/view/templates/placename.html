@@ -23,22 +23,26 @@
         {%  endif %}
 
 
-        <dt>Display on a Map (refresh page if needed):</dt>
-        <dd><a href="{{ hasMap['uri'] }}">{{ hasMap['label'] }}</a></dd>
-        <dd>{% include 'map.html' %}</dd>
+        <dt>Display on a Map:</dt>
+        <iframe id="inlineFrameMap"
+            title="Map for {{ hasName['value'] }}"
+            width="1150"
+            height="250"
+            src="{{ url_for('controller.show_map') }}?name={{ hasName['value']|urlencode }}&x={{ longitude }}&y={{ latitude }}">
+
+        </iframe>
 
         <dt>Position Lat Long:</dt>
         <dd><em>{{ latitude, longitude }}</em></dd>
 
         <dt>naming authority:</dt>
-        <dd><a href="{{ wasNamedBy['label'] }}">{{ wasNamedBy['label'] }}</a></dd>
+        <dd><a href="{{ url_for('controller.gazetteer', gazetteer_id=register['uri']) }}">{{ wasNamedBy['label'] }}</a></dd>
 
         <dt>name formality:</dt>
         <dd><a href="{{ hasNameFormality['uri'] }}">{{ hasNameFormality['label'] }}</a></dd>
 
-
         <dt>registry:</dt>
-        <dd><a href="{{ register['uri'] }}">{{ register['uri'] }}</a></dd>
+        <dd><a href="{{ url_for('controller.gazetteer', gazetteer_id=register['uri']) }}">{{ register['uri'] }}</a></dd>
 
         <dt>modified date:</dt>
         <dd>{{ modifiedDate.strftime('%Y-%m-%d') }}</dd>
