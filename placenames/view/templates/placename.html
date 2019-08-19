@@ -36,14 +36,13 @@
         <dd><em>{{ latitude, longitude }}</em></dd>
 
         <dt>naming authority:</dt>
-        <dd><a href="{{ wasNamedBy['label'] }}">{{ wasNamedBy['label'] }}</a></dd>
+        <dd><a href="{{ url_for('controller.gazetteer', gazetteer_id=register['uri']) }}">{{ wasNamedBy['label'] }}</a></dd>
 
         <dt>name formality:</dt>
         <dd><a href="{{ hasNameFormality['uri'] }}">{{ hasNameFormality['label'] }}</a></dd>
 
-
         <dt>registry:</dt>
-        <dd><a href="{{ register['uri'] }}">{{ register['uri'] }}</a></dd>
+        <dd><a href="{{ url_for('controller.gazetteer', gazetteer_id=register['uri']) }}">{{ register['uri'] }}</a></dd>
 
         <dt>modified date:</dt>
         <dd>{{ modifiedDate.strftime('%Y-%m-%d') }}</dd>
