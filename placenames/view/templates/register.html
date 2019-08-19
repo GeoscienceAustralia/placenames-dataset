@@ -1,7 +1,7 @@
 {% extends "layout.html" -%}
 
 {% block content -%}
-        <h1>{{ label }}</h1>
+        <h1>National Composite Gazetteer of Australia</h1>
         <h2>Register View</h2>
         <h3>Classes of item in this Register:</h3>
         <ul>
@@ -9,14 +9,12 @@
             <li><a href="{{ class }}">{{ class }}</a></li>
         {%  endfor -%}
         </ul>
-        {% if comment -%}
-            <p>{{ comment }}</p>
-        {% endif -%}
+
         
         <p></p>
         {% if search_enabled -%}
             <form action="?search=">
-                Search <em>{{ register_item_type_string }}:</em><br>
+                Search Register <em>{{ register_item_type_string }}:</em><br>
                 <input type="text" name="search">
                 <input type="submit" value="Submit">
             </form>

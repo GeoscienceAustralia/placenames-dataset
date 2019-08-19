@@ -4,8 +4,6 @@
 
 
 {% block content %}
-    <h1>Placename {{ id }}</h1>
-    <p><code>{{ uri }}</code></p>
     <style>
         dt {font-weight: bold;}
     </style>
@@ -13,17 +11,13 @@
 
 
     <dl>
-        <dt><a title="{{ hasName['comment'] }}" href="{{ hasName['uri'] }}">{{ hasName['label'] }}</a></dt>
-        <dd>{{ hasName['value'] }}</dd>
+        <dt><i><a title="{{ hasName['comment'] }}" href="{{ hasName['uri'] }}">{{ hasName['label'] }}</a></i></dt>
+        <dd><h2>{{ hasName['value'] }}</h2></dd>
+
+        <h4>Placename {{ id }}</h4>
+        <p><code>{{ uri }}</code></p>
 
 
-        {%  if hasPronunciation is not none %}
-        <dt>pronunciation:</dt>
-        <dd><em>"{{ hasPronunciation }}"</em></dd>
-        {%  endif %}
-
-
-        <dt>Display on a Map:</dt>
         <iframe id="inlineFrameMap"
             title="Map for {{ hasName['value'] }}"
             width="1150"
@@ -31,6 +25,23 @@
             src="{{ url_for('controller.show_map') }}?name={{ hasName['value']|urlencode }}&x={{ longitude }}&y={{ latitude }}">
 
         </iframe>
+
+        {%  if hasPronunciation is not none %}
+        <dt>pronunciation:</dt>
+        <dd><em>"{{ hasPronunciation }}"</em></dd>
+        {%  endif %}
+
+        <dt>Feature type:</dt><dd>
+        <em>{{ hasFeature }}</em></dd>
+
+
+        <dt>Feature Category:</dt>
+        <dd><em>{{ hasCategory }}</em></dd>
+
+
+        <dt>Feature Group:</dt>
+        <dd><em>{{ hasGroup }}</em></dd>
+
 
         <dt>Position Lat Long:</dt>
         <dd><em>{{ latitude, longitude }}</em></dd>

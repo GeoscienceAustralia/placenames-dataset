@@ -38,8 +38,8 @@ class Placename(Renderer):
         self.id = uri.split('/')[-1]
 
         self.hasName = {
-            'uri': 'http://linked.data.gov.au/def/placename/hasname',
-            'label': 'place name:',
+            'uri': 'http://linked.data.gov.au/def/placenames/',
+            'label': 'from National Composite Gazetteer of Australia:',
             'comment': 'The Entity has a name (label) which is a text sting.',
             'value': None
         }
@@ -115,7 +115,8 @@ class Placename(Renderer):
 
         self.modifiedDate = None
 
-        self.hasPronunciation = '. . . to be done . . .'
+        self.hasPronunciation = None   # None == don't display
+        # pronunciation will only be displyed on webpage if it exists
 
         q = '''
             SELECT 
@@ -139,6 +140,10 @@ class Placename(Renderer):
             self.x = placename[7]
 
             self.hasName['value'] = str(placename[0]) + " (" + str(placename[3]).capitalize() + ")"
+
+            self.hasFeature = str(placename[3])
+            self.hasCategory = str(placename[4])
+            self.hasGroup = str(placename[5])
 
             self.wasNamedBy['label'] = (GAZETTEERS[str(placename[1])]['label'])
 
@@ -168,6 +173,9 @@ class Placename(Renderer):
                 hasName=self.hasName,
                 hasPronunciation=self.hasPronunciation,
                 register=self.register,
+                hasFeature = self.hasFeature,
+                hasCategory = self.hasCategory,
+                hasGroup = self.hasGroup,
                 wasNamedBy=self.wasNamedBy,
                 hasNameFormality=self.hasNameFormality,
                 modifiedDate=self.modifiedDate,
