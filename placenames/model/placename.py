@@ -39,59 +39,59 @@ class Placename(Renderer):
 
         self.hasName = {
             'uri': 'http://linked.data.gov.au/def/placenames/',
-            'label': 'from National Composite Gazetteer of Australia:',
+            'label': 'from National Composite Gazetteer of Australia (beta version 0.2):',
             'comment': 'The Entity has a name (label) which is a text sting.',
             'value': None
         }
         # Use imported dictionary of gazetteers
         #need to insert uri_id's to point to the authority though the naming authorities dictionary below
 
-        #print(GAZETTEERS['AAD']['label'])
-        #print(GAZETTEERS['AAD']['uri_id'])
+        # print(GAZETTEERS['WA']['label'])
+        # print(GAZETTEERS['WA']['uri_id'])
 
         # need to build this naming Authorities dictionary out
-        naming_authorities = {
-            'AAD': {
-                'label': 'Australian Antarctic Division Gazetteer',
-                'uri': 'https://data.aad.gov.au/aadc/gaz/'
-            },
-            'ACT': {
-                'label': 'Australian Capital Territory Gazetteer',
-                'uri': 'http://app.actmapi.act.gov.au/actmapi/index.html?viewer=pn'
-            },
-            'AHO': {
-                'label': 'Australian Hydrographic Office',
-                'uri': 'http://www.hydro.gov.au/'
-            },
-            'NSW': {
-                'label': 'New South Wales Place Names Search',
-                'uri': 'http://www.gnb.nsw.gov.au/place_naming/placename_search'
-            },
-            'NT': {
-                'label': 'Northern Territory Place Names',
-                'uri': 'https://www.ntlis.nt.gov.au/placenames/'
-            },
-            'QLD': {
-                'label': 'Queensland Place Names Search',
-                'uri': 'https://www.dnrm.qld.gov.au/qld/environment/land/place-names/search'
-            },
-            'SA': {
-                'label': 'South Australia Place Names Search',
-                'uri': 'https://www.sa.gov.au/topics/planning-and-property/planning-and-land-management/suburb-road-and-place-names/place-names-search'
-            },
-            'TAS': {
-                'label': 'Tasmania Place Names',
-                'uri': 'https://www.placenames.tas.gov.au/#p0'
-            },
-            'VIC': {
-                'label': 'Victoria Place Names',
-                'uri': 'https://maps.land.vic.gov.au/lassi/VicnamesUI.jsp'
-            },
-            'WA': {
-                'label': 'Western Australia\'s Place Names Gazetteer',
-                'uri': 'https://www0.landgate.wa.gov.au/maps-and-imagery/wa-geographic-names'
-            }
-        }
+        # naming_authorities = {
+        #     'AAD': {
+        #         'label': 'Australian Antarctic Division Gazetteer',
+        #         'uri': 'https://data.aad.gov.au/aadc/gaz/'
+        #     },
+        #     'ACT': {
+        #         'label': 'Australian Capital Territory Gazetteer',
+        #         'uri': 'http://app.actmapi.act.gov.au/actmapi/index.html?viewer=pn'
+        #     },
+        #     'AHO': {
+        #         'label': 'Australian Hydrographic Office',
+        #         'uri': 'http://www.hydro.gov.au/'
+        #     },
+        #     'NSW': {
+        #         'label': 'New South Wales Place Names Search',
+        #         'uri': 'http://www.gnb.nsw.gov.au/place_naming/placename_search'
+        #     },
+        #     'NT': {
+        #         'label': 'Northern Territory Place Names',
+        #         'uri': 'https://www.ntlis.nt.gov.au/placenames/'
+        #     },
+        #     'QLD': {
+        #         'label': 'Queensland Place Names Search',
+        #         'uri': 'https://www.dnrm.qld.gov.au/qld/environment/land/place-names/search'
+        #     },
+        #     'SA': {
+        #         'label': 'South Australia Place Names Search',
+        #         'uri': 'https://www.sa.gov.au/topics/planning-and-property/planning-and-land-management/suburb-road-and-place-names/place-names-search'
+        #     },
+        #     'TAS': {
+        #         'label': 'Tasmania Place Names',
+        #         'uri': 'https://www.placenames.tas.gov.au/#p0'
+        #     },
+        #     'VIC': {
+        #         'label': 'Victoria Place Names',
+        #         'uri': 'https://maps.land.vic.gov.au/lassi/VicnamesUI.jsp'
+        #     },
+        #     'WA': {
+        #         'label': 'Western Australia\'s Place Names Gazetteer',
+        #         'uri': 'https://www0.landgate.wa.gov.au/maps-and-imagery/wa-geographic-names'
+        #     }
+        # }
 
         self.register = {
             'label': None,
@@ -108,10 +108,7 @@ class Placename(Renderer):
             'uri': 'http://linked.data.gov.au/def/placenames/nameFormality/Official'
         }
 
-        self.hasMap = {
-            'label': 'Click to see Map',
-            'uri': '/view/templates/map.html'
-        }
+
 
         self.modifiedDate = None
 
@@ -144,10 +141,18 @@ class Placename(Renderer):
             self.hasFeature = str(placename[3])
             self.hasCategory = str(placename[4])
             self.hasGroup = str(placename[5])
+            # print(GAZETTEERS[str(placename[1])]['label'])
+            # print(GAZETTEERS[str(placename[1])]['uri_id'])
+
 
             self.wasNamedBy['label'] = (GAZETTEERS[str(placename[1])]['label'])
+            self.wasNamedBy['uri'] = (GAZETTEERS[str(placename[1])]['uri_id'])
+
+
+            print('wasnamedby', self.wasNamedBy)
 
             self.register['uri'] = (GAZETTEERS[str(placename[1])]['uri_id'])
+            self.register['label'] = (GAZETTEERS[str(placename[1])]['label'])
 
             #self.register['uri'] = 'http://linked.data.gov.au/dataset/placenames/gazetteer/' + str(placename[1])
 
@@ -172,16 +177,16 @@ class Placename(Renderer):
                 id=self.id,
                 hasName=self.hasName,
                 hasPronunciation=self.hasPronunciation,
-                register=self.register,
                 hasFeature = self.hasFeature,
                 hasCategory = self.hasCategory,
                 hasGroup = self.hasGroup,
                 wasNamedBy=self.wasNamedBy,
+                register=self.register,
                 hasNameFormality=self.hasNameFormality,
                 modifiedDate=self.modifiedDate,
                 longitude = self.x,
                 latitude = self.y,
-                hasMap = self.hasMap
+
 
                 # schemaorg=self.export_schemaorg()
             ),

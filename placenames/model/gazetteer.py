@@ -108,7 +108,8 @@ class Gazetteer(Renderer):
 
         self.hasName['value'] = str(GAZETTEERS[self.id]['label'])
         self.register['label'] = str(GAZETTEERS[self.id]['label'])
-        self.register['uri'] = GAZETTEER_URI_PREFIX + str(GAZETTEERS[self.id]['uri_id'])
+        #self.register['uri'] = GAZETTEER_URI_PREFIX + str(GAZETTEERS[self.id]['uri_id'])
+        self.register['uri'] = str(GAZETTEERS[self.id]['uri_id'])
         self.modifiedDate = DATE_MODIFIED
 
         # need to build this naming Authorities dictionary out
