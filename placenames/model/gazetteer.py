@@ -15,43 +15,43 @@ GAZETTEER_URI_PREFIX = 'http://linked.data.gov.au/dataset/placenames/gazetteer/'
 GAZETTEERS = {
     'AAD': {
         'label': 'Australian Antarctic Place Names Gazetteer',
-        'uri_id': 'AAD'
+        'uri_id': 'https://data.aad.gov.au/aadc/gaz/'
     },
     'ACT': {
         'label': 'Australian Capital Territory Place Names Gazetteer',
-        'uri_id': 'ACT'
+        'uri_id': 'http://app.actmapi.act.gov.au/actmapi/index.html?viewer=pn'
     },
     'AHO': {
         'label': 'Australian Hydrographic Office Place Names Gazetteer',
-        'uri_id': 'AHO'
+        'uri_id': 'http://www.hydro.gov.au/'
     },
     'NSW': {
         'label': 'New South Wales Place Names Gazetteer',
-        'uri_id': 'NSW'
+        'uri_id': 'http://www.gnb.nsw.gov.au/place_naming/placename_search'
     },
     'NT': {
         'label': 'Northern Territory Place Names Gazetteer',
-        'uri_id': 'NT'
+        'uri_id': 'https://www.ntlis.nt.gov.au/placenames/'
     },
     'QLD': {
         'label': 'Queensland Place Names Gazetteer',
-        'uri_id': 'QLD'
+        'uri_id': 'https://www.dnrm.qld.gov.au/qld/environment/land/place-names/search'
     },
     'SA': {
         'label': 'South Australian Place Names Gazetteer',
-        'uri_id': 'SA'
+        'uri_id': 'https://www.sa.gov.au/topics/planning-and-property/planning-and-land-management/suburb-road-and-place-names/place-names-search'
     },
     'TAS': {
         'label': 'Tasmanian Place Names Gazetteer',
-        'uri_id': 'TAS'
+        'uri_id': 'https://www.placenames.tas.gov.au/#p0'
     },
     'VIC': {
         'label': 'Victorian Place Names Gazetteer',
-        'uri_id': 'VIC'
+        'uri_id': 'https://maps.land.vic.gov.au/lassi/VicnamesUI.jsp'
     },
     'WA': {
         'label': 'Western Australian Place Names Gazetteer',
-        'uri_id': 'WA'
+        'uri_id': 'https://www0.landgate.wa.gov.au/maps-and-imagery/wa-geographic-names'
     }
 }
 
@@ -111,7 +111,7 @@ class Gazetteer(Renderer):
         self.register['uri'] = GAZETTEER_URI_PREFIX + str(GAZETTEERS[self.id]['uri_id'])
         self.modifiedDate = DATE_MODIFIED
 
-        # need to build this nameing Authorities dictionary out
+        # need to build this naming Authorities dictionary out
         naming_authorities = {
             'ACT': {
                 'label': 'Australian Capital Territory',
