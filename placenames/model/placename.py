@@ -9,7 +9,7 @@ import placenames._conf as conf
 from pyldapi import Renderer, View
 from rdflib import Graph, URIRef, RDF, XSD, Namespace, Literal
 
-from .gazetteer import GAZETTEERS
+from .gazetteer import GAZETTEERS, NAME_AUTHORITIES
 
 
 #import branca
@@ -43,55 +43,6 @@ class Placename(Renderer):
             'comment': 'The Entity has a name (label) which is a text sting.',
             'value': None
         }
-        # Use imported dictionary of gazetteers
-        #need to insert uri_id's to point to the authority though the naming authorities dictionary below
-
-        # print(GAZETTEERS['WA']['label'])
-        # print(GAZETTEERS['WA']['uri_id'])
-
-        # need to build this naming Authorities dictionary out
-        # naming_authorities = {
-        #     'AAD': {
-        #         'label': 'Australian Antarctic Division Gazetteer',
-        #         'uri': 'https://data.aad.gov.au/aadc/gaz/'
-        #     },
-        #     'ACT': {
-        #         'label': 'Australian Capital Territory Gazetteer',
-        #         'uri': 'http://app.actmapi.act.gov.au/actmapi/index.html?viewer=pn'
-        #     },
-        #     'AHO': {
-        #         'label': 'Australian Hydrographic Office',
-        #         'uri': 'http://www.hydro.gov.au/'
-        #     },
-        #     'NSW': {
-        #         'label': 'New South Wales Place Names Search',
-        #         'uri': 'http://www.gnb.nsw.gov.au/place_naming/placename_search'
-        #     },
-        #     'NT': {
-        #         'label': 'Northern Territory Place Names',
-        #         'uri': 'https://www.ntlis.nt.gov.au/placenames/'
-        #     },
-        #     'QLD': {
-        #         'label': 'Queensland Place Names Search',
-        #         'uri': 'https://www.dnrm.qld.gov.au/qld/environment/land/place-names/search'
-        #     },
-        #     'SA': {
-        #         'label': 'South Australia Place Names Search',
-        #         'uri': 'https://www.sa.gov.au/topics/planning-and-property/planning-and-land-management/suburb-road-and-place-names/place-names-search'
-        #     },
-        #     'TAS': {
-        #         'label': 'Tasmania Place Names',
-        #         'uri': 'https://www.placenames.tas.gov.au/#p0'
-        #     },
-        #     'VIC': {
-        #         'label': 'Victoria Place Names',
-        #         'uri': 'https://maps.land.vic.gov.au/lassi/VicnamesUI.jsp'
-        #     },
-        #     'WA': {
-        #         'label': 'Western Australia\'s Place Names Gazetteer',
-        #         'uri': 'https://www0.landgate.wa.gov.au/maps-and-imagery/wa-geographic-names'
-        #     }
-        # }
 
         self.register = {
             'label': None,
@@ -108,7 +59,11 @@ class Placename(Renderer):
             'uri': 'http://linked.data.gov.au/def/placenames/nameFormality/Official'
         }
 
-
+        self.authority = {
+            'label': None,
+            'web': None
+        }
+        self.email = None
 
         self.modifiedDate = None
 
@@ -133,6 +88,7 @@ class Placename(Renderer):
             #     print(item)
             #print(placename)
             #print(placename[0], placename[1], placename[2], placename[3], placename[4], placename[5]), placename[6], placename[7]
+            # set up x y location from database
             self.y = placename[6]
             self.x = placename[7]
 
@@ -144,12 +100,11 @@ class Placename(Renderer):
             # print(GAZETTEERS[str(placename[1])]['label'])
             # print(GAZETTEERS[str(placename[1])]['uri_id'])
 
+            self.authority['label'] = (NAME_AUTHORITIES[str(placename[1])]['label'])
+            self.authority['web'] = (NAME_AUTHORITIES[str(placename[1])]['web'])
+            self.email = (NAME_AUTHORITIES[str(placename[1])]['email'])
 
-            self.wasNamedBy['label'] = (GAZETTEERS[str(placename[1])]['label'])
-            self.wasNamedBy['uri'] = (GAZETTEERS[str(placename[1])]['uri_id'])
-
-
-            print('wasnamedby', self.wasNamedBy)
+            print('authority', self.authority)
 
             self.register['uri'] = (GAZETTEERS[str(placename[1])]['uri_id'])
             self.register['label'] = (GAZETTEERS[str(placename[1])]['label'])
@@ -180,7 +135,8 @@ class Placename(Renderer):
                 hasFeature = self.hasFeature,
                 hasCategory = self.hasCategory,
                 hasGroup = self.hasGroup,
-                wasNamedBy=self.wasNamedBy,
+                authority=self.authority,
+                authority_email = self.email,
                 register=self.register,
                 hasNameFormality=self.hasNameFormality,
                 modifiedDate=self.modifiedDate,
