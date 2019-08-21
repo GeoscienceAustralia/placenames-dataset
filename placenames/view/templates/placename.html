@@ -34,28 +34,26 @@
         <dt>Feature type:</dt><dd>
         <em>{{ hasFeature }}</em></dd>
 
-
         <dt>Feature Category:</dt>
         <dd><em>{{ hasCategory }}</em></dd>
-
 
         <dt>Feature Group:</dt>
         <dd><em>{{ hasGroup }}</em></dd>
 
-
         <dt>Position Lat Long:</dt>
         <dd><em>{{ latitude, longitude }}</em></dd>
 
-        <dt>naming authority:</dt>
-        <dd><a href="{{ url_for('controller.gazetteer', gazetteer_id=register['uri']) }}">{{ wasNamedBy['label'] }}</a></dd>
+        <dt>Registry:</dt>
+        <dd><a href="{{ register['uri'] }}">{{ register['label'] }}</a></dd>
 
-        <dt>name formality:</dt>
+        <dt>Naming authority:</dt>
+        <dd><a href="{{ authority['uri'] }}">{{ authority['label'] }}</a></dd>
+        <dd>{{ authority_email }} </dd>
+
+        <dt>Name formality:</dt>
         <dd><a href="{{ hasNameFormality['uri'] }}">{{ hasNameFormality['label'] }}</a></dd>
 
-        <dt>registry:</dt>
-        <dd><a href="{{ url_for('controller.gazetteer', gazetteer_id=register['uri']) }}">{{ register['uri'] }}</a></dd>
-
-        <dt>modified date:</dt>
+        <dt>Modified date:</dt>
         <dd>{{ modifiedDate.strftime('%Y-%m-%d') }}</dd>
     </dl>
     <p>
