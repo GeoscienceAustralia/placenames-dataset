@@ -113,7 +113,7 @@ class Placename(Renderer):
 
             #print('name auth', naming_authorities[str(placename[1])]['label'])
 
-            self.modifiedDate = placename[2]
+            self.supplyDate = placename[2]
 
 
     # maybe should call this function something else - it seems to clash ie Overrides the method in Renderer
@@ -139,7 +139,7 @@ class Placename(Renderer):
                 authority_email = self.email,
                 register=self.register,
                 hasNameFormality=self.hasNameFormality,
-                modifiedDate=self.modifiedDate,
+                supplyDate=self.supplyDate,
                 longitude = self.x,
                 latitude = self.y,
 
