@@ -12,7 +12,7 @@ from rdflib import Graph, URIRef, RDF, XSD, Namespace, Literal
 from .gazetteer import GAZETTEERS, NAME_AUTHORITIES
 
 # for DGGS zone attribution
-import dggs
+from AusPIXengine import dggs
 rdggs = dggs.RHEALPixDGGS()
 
 
