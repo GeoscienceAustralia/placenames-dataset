@@ -24,8 +24,8 @@ if PLACE_NAMES_DB_CON_DICT is None:
     exit()
 
 
-JURISDICTION_INSTANCE_URI_STEM = 'http://localhost:5000/jurisdiction/'
-GAZETTEER_INSTANCE_URI_STEM = 'http://localhost:5000/gazetteer/'
+# JURISDICTION_INSTANCE_URI_STEM = 'http://localhost:5000/jurisdiction/'
+# GAZETTEER_INSTANCE_URI_STEM = 'http://localhost:5000/gazetteer/'
 
 
 def db_select(q):
