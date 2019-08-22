@@ -11,6 +11,10 @@ from rdflib import Graph, URIRef, RDF, XSD, Namespace, Literal
 
 from .gazetteer import GAZETTEERS, NAME_AUTHORITIES
 
+# for DGGS zone attribution
+import dggs
+rdggs = dggs.RHEALPixDGGS()
+
 
 #import branca
 
@@ -114,6 +118,11 @@ class Placename(Renderer):
             #print('name auth', naming_authorities[str(placename[1])]['label'])
 
             self.supplyDate = placename[2]
+            #DGGS function
+            resolution = 9
+            # coords = (longi, lati)  # format required like this
+            coords = (self.x, self.y)
+            self.thisCell = rdggs.cell_from_point(resolution, coords, plane=False)  # false = on the elipsoidal curve
 
 
     # maybe should call this function something else - it seems to clash ie Overrides the method in Renderer
@@ -142,6 +151,7 @@ class Placename(Renderer):
                 supplyDate=self.supplyDate,
                 longitude = self.x,
                 latitude = self.y,
+                ausPIX_DGGS = self.thisCell
 
 
                 # schemaorg=self.export_schemaorg()
