@@ -32,13 +32,13 @@
         {%  endif %}
 
         <dt>Feature type:</dt><dd>
-        <em>{{ hasFeature }}</em></dd>
+        <dd><a href="{{ featureType['uri'] }}">{{ featureType['label'] }}</a></dd>
 
         <dt>Feature Category:</dt>
-        <dd><em>{{ hasCategory }}</em></dd>
+        <dd><a href="{{ hasCategory['uri'] }}">{{ hasCategory['label'] }}</a></dd>
 
         <dt>Feature Group:</dt>
-        <dd><em>{{ hasGroup }}</em></dd>
+        <dd><a href="{{ hasGroup['uri'] }}">{{ hasGroup['label'] }}</a></dd>
 
         <dt>Position Lat Long:</dt>
         <dd><em>{{ latitude, longitude }}</em></dd>

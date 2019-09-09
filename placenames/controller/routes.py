@@ -6,7 +6,7 @@ from pyldapi import RegisterRenderer
 import placenames._conf as conf
 import folium
 import os
-
+print(__name__)
 routes = Blueprint('controller', __name__)
 
 DEFAULT_ITEMS_PER_PAGE=50

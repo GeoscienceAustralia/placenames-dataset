@@ -39,6 +39,7 @@ class Placename(Renderer):
         }
 
         super(Placename, self).__init__(request, uri, views, 'pn', None)
+
         self.id = uri.split('/')[-1]
 
         self.hasName = {
@@ -52,6 +53,22 @@ class Placename(Renderer):
             'label': None,
             'uri': None
         }
+
+        self.featureType = {
+            'label': None,
+            'uri': None
+        }
+
+        self.hasCategory = {
+            'label': None,
+            'uri': None
+        }
+
+        self.hasGroup = {
+            'label': None,
+            'uri': None
+        }
+
 
         self.wasNamedBy = {
             'label': None,
@@ -98,17 +115,22 @@ class Placename(Renderer):
 
             self.hasName['value'] = str(placename[0]) + " (" + str(placename[3]).capitalize() + ")"
 
-            self.hasFeature = str(placename[3])
-            self.hasCategory = str(placename[4])
-            self.hasGroup = str(placename[5])
-            # print(GAZETTEERS[str(placename[1])]['label'])
-            # print(GAZETTEERS[str(placename[1])]['uri_id'])
+            self.featureType['label'] = str(placename[3])
+            self.featureType['uri'] = 'http://vocabs.ands.org.au/repository/api/lda/ga/place-type/v1-0/resource?uri=http://pid.geoscience.gov.au/def/voc/ga/PlaceType/' + str(placename[3])
+
+            #self.hasCategory = str(placename[4])
+            self.hasCategory['label'] = str(placename[4])
+            self.hasCategory['uri'] = 'http://vocabs.ands.org.au/repository/api/lda/ga/place-type/v1-0/resource?uri=http://pid.geoscience.gov.au/def/voc/ga/PlaceType/' + str(placename[4])
+
+            #self.hasGroup = str(placename[5])
+            self.hasGroup['label'] = str(placename[5])
+            self.hasGroup['uri'] = 'http://vocabs.ands.org.au/repository/api/lda/ga/place-type/v1-0/resource?uri=http://pid.geoscience.gov.au/def/voc/ga/PlaceType/' + str(placename[5])
 
             self.authority['label'] = (NAME_AUTHORITIES[str(placename[1])]['label'])
             self.authority['web'] = (NAME_AUTHORITIES[str(placename[1])]['web'])
             self.email = (NAME_AUTHORITIES[str(placename[1])]['email'])
 
-            print('authority', self.authority)
+            #print('authority', self.authority)
 
             self.register['uri'] = (GAZETTEERS[str(placename[1])]['uri_id'])
             self.register['label'] = (GAZETTEERS[str(placename[1])]['label'])
@@ -141,7 +163,9 @@ class Placename(Renderer):
                 id=self.id,
                 hasName=self.hasName,
                 hasPronunciation=self.hasPronunciation,
-                hasFeature = self.hasFeature,
+                hasFeature = self.featureType,
+                featureType = self.featureType,
+                featureTypeURI= 'http://pid.geoscience.gov.au/def/voc/ga/PlaceType/' + str(self.featureType),
                 hasCategory = self.hasCategory,
                 hasGroup = self.hasGroup,
                 authority=self.authority,
