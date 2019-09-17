@@ -1,7 +1,5 @@
 # placenames-dataset
-Place Names Dataset
+Linked Data API codebase for placenames. Connects directly to The National Composite Gazetteer of Australia. Provides landing-pages with map and data for each placename. Provides alternate views including csv, rdf, json etc
 
-
-TODO
-. Use Apache Licence
-. complete this file
+An active instance is available on request.
+Users can also download datasets from https://placenames.fsdf.org.au/
