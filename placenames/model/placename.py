@@ -116,15 +116,15 @@ class Placename(Renderer):
             self.hasName['value'] = str(placename[0]) + " (" + str(placename[3]).capitalize() + ")"
 
             self.featureType['label'] = str(placename[3])
-            self.featureType['uri'] = 'http://vocabs.ands.org.au/repository/api/lda/ga/place-type/v1-0/resource?uri=http://pid.geoscience.gov.au/def/voc/ga/PlaceType/' + str(placename[3])
+            self.featureType['uri'] = 'http://vocabs.ands.org.au/repository/api/lda/ga/place-type/v1-0/resource?uri=http://pid.geoscience.gov.au/def/voc/ga/PlaceType/' + str(placename[3]).replace(' ','_')
 
             #self.hasCategory = str(placename[4])
             self.hasCategory['label'] = str(placename[4])
-            self.hasCategory['uri'] = 'http://vocabs.ands.org.au/repository/api/lda/ga/place-type/v1-0/resource?uri=http://pid.geoscience.gov.au/def/voc/ga/PlaceType/' + str(placename[4])
+            self.hasCategory['uri'] = 'http://vocabs.ands.org.au/repository/api/lda/ga/place-type/v1-0/resource?uri=http://pid.geoscience.gov.au/def/voc/ga/PlaceType/' + str(placename[4]).replace(' ','_')
 
             #self.hasGroup = str(placename[5])
             self.hasGroup['label'] = str(placename[5])
-            self.hasGroup['uri'] = 'http://vocabs.ands.org.au/repository/api/lda/ga/place-type/v1-0/resource?uri=http://pid.geoscience.gov.au/def/voc/ga/PlaceType/' + str(placename[5])
+            self.hasGroup['uri'] = 'http://vocabs.ands.org.au/repository/api/lda/ga/place-type/v1-0/resource?uri=http://pid.geoscience.gov.au/def/voc/ga/PlaceType/' + str(placename[5]).replace(' ','_')
 
             self.authority['label'] = (NAME_AUTHORITIES[str(placename[1])]['label'])
             self.authority['web'] = (NAME_AUTHORITIES[str(placename[1])]['web'])
