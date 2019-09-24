@@ -193,10 +193,22 @@ class Placename(Renderer):
         g.bind('pn', PN)
 
 
-        #loop through the next 3 lines to get subject, predicate, object for the triple store adding each time??
+        #generate all the data available as rdf for export to rdf file
         me = URIRef(self.uri)   # URIRef is a RDF class
         g.add((me, RDF.type, URIRef('http://linked.data.gov.au/def/placename/PlaceName')))  # PN.PlaceName))
         g.add((me, PN.hasName, Literal(self.hasName['value'], datatype=XSD.string)))
+        g.add((me, PN.longitude, Literal(self.x, datatype=XSD.float )))
+        g.add((me, PN.latitude, Literal(self.y, datatype=XSD.float)))
+        g.add((me, PN.featureType, Literal(self.featureType, datatype=XSD.string)))
+        g.add((me, PN.hasCategory, Literal(self.hasCategory, datatype=XSD.string)))
+        g.add((me, PN.hasGroup, Literal(self.hasGroup, datatype=XSD.string)))
+        g.add((me, PN.hasRegister, Literal(self.register, datatype=XSD.string)))
+        g.add((me, PN.hasNameFormality, Literal(self.hasNameFormality, datatype=XSD.string)))
+        g.add((me, PN.ausPIX_DGGS, Literal(str(self.thisCell), datatype=XSD.string)))
+        g.add((me, PN.supplyDate, Literal(str(self.supplyDate), datatype=XSD.string)))
+
+
+
 
         if self.format == 'text/turtle':
             return Response(
