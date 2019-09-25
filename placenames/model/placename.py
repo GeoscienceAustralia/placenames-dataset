@@ -49,6 +49,12 @@ class Placename(Renderer):
             'value': None
         }
 
+        self.thisCell = {
+            'label': None,
+            'uri': None
+        }
+
+
         self.register = {
             'label': None,
             'uri': None
@@ -141,11 +147,15 @@ class Placename(Renderer):
 
             self.supplyDate = placename[2]
             #DGGS function
-            resolution = 9
+            resolution = 7
+            self.thisDGGSCell = None
+
             # coords = (longi, lati)  # format required like this
             coords = (self.x, self.y)
-            self.thisCell = rdggs.cell_from_point(resolution, coords, plane=False)  # false = on the elipsoidal curve
-
+            self.thisDGGScell = rdggs.cell_from_point(resolution, coords, plane=False)  # false = on the elipsoidal curve
+            print(self.thisDGGScell)
+            self.thisCell['label'] = str(self.thisDGGScell)
+            self.thisCell['uri']= 'http://ec2-52-63-73-113.ap-southeast-2.compute.amazonaws.com/AusPIX-DGGS-dataset/ausPIX/' + str(self.thisDGGScell)
 
     # maybe should call this function something else - it seems to clash ie Overrides the method in Renderer
     def render(self):

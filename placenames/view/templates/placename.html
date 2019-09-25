@@ -40,11 +40,11 @@
         <dt>Feature Group:</dt>
         <dd><a href="{{ hasGroup['uri'] }}">{{ hasGroup['label'] }}</a></dd>
 
-        <dt>Position Lat Long:</dt>
-        <dd><em>{{ latitude, longitude }}</em></dd>
+        <dt>Position Long Lat:</dt>
+        <dd><em>{{ longitude, latitude }}</em></dd>
 
-        <dt>AusPIX DGGS location (experimental):</dt>
-        <dd><em>{{ ausPIX_DGGS }}</em></dd>
+        <dt>AusPIX level 7 cell for this place:</dt>
+        <dd><a href="{{ ausPIX_DGGS['uri'] }}">{{ ausPIX_DGGS['label'] }}</a></dd>
 
         <dt>Registry:</dt>
         <dd><a href="{{ register['uri'] }}">{{ register['label'] }}</a></dd>
