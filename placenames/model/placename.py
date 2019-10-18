@@ -141,15 +141,10 @@ class Placename(Renderer):
             self.register['uri'] = (GAZETTEERS[str(placename[1])]['uri_id'])
             self.register['label'] = (GAZETTEERS[str(placename[1])]['label'])
 
-            #self.register['uri'] = 'http://linked.data.gov.au/dataset/placenames/gazetteer/' + str(placename[1])
-
-            #print('name auth', naming_authorities[str(placename[1])]['label'])
-
             self.supplyDate = placename[2]
             #DGGS function
             resolution = 7
             self.thisDGGSCell = None
-
             # coords = (longi, lati)  # format required like this
             coords = (self.x, self.y)
             self.thisDGGScell = rdggs.cell_from_point(resolution, coords, plane=False)  # false = on the elipsoidal curve
@@ -206,6 +201,7 @@ class Placename(Renderer):
         #generate all the data available as rdf for export to rdf file
         me = URIRef(self.uri)   # URIRef is a RDF class
         g.add((me, RDF.type, URIRef('http://linked.data.gov.au/def/placename/PlaceName')))  # PN.PlaceName))
+        g.add((me, PN.hasID, Literal(self.id, datatype=XSD.string)))
         g.add((me, PN.hasName, Literal(self.hasName['value'], datatype=XSD.string)))
         g.add((me, PN.longitude, Literal(self.x, datatype=XSD.float )))
         g.add((me, PN.latitude, Literal(self.y, datatype=XSD.float)))
@@ -216,8 +212,6 @@ class Placename(Renderer):
         g.add((me, PN.hasNameFormality, Literal(self.hasNameFormality, datatype=XSD.string)))
         g.add((me, PN.ausPIX_DGGS, Literal(str(self.thisCell), datatype=XSD.string)))
         g.add((me, PN.supplyDate, Literal(str(self.supplyDate), datatype=XSD.string)))
-
-
 
 
         if self.format == 'text/turtle':
