@@ -7,18 +7,21 @@
     </style>
 
     <dl>
-        <dt><i><a title="{{ hasName['comment'] }}" href="{{ hasName['uri'] }}">{{ hasName['label'] }}</a></i></dt>
-        <dd><h2>{{ hasName['value'] }}</h2></dd>
 
-        <h4>Placename {{ id }}</h4>
-        <p><code>{{ uri }}</code></p>
+        <dt><i><a title="{{ hasName['comment'] }}" href="{{ hasName['uri'] }}">{{ hasName['label'] }}</a></i></dt>
+
+
+        <dd><h2> {{ name }}</h2></dd>
+        <dd>Data source for this placename: <a href="{{ authority['web'] }}">{{ authority['label'] }}</a></dd>
+
+        <p><code>Place identification code is  {{ id }}</code></p>
 
 
         <iframe id="inlineFrameMap"
             title="Map for {{ hasName['value'] }}"
             width="1150"
             height="250"
-            src="{{ url_for('controller.show_map') }}?name={{ hasName['value']|urlencode }}&x={{ longitude }}&y={{ latitude }}">
+            src="{{ url_for('controller.show_map') }}?name={{ hasPlaceNameOf }}&x={{ longitude }}&y={{ latitude }}">
 
         </iframe>
 

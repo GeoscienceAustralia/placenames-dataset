@@ -44,7 +44,7 @@ class Placename(Renderer):
 
         self.hasName = {
             'uri': 'http://linked.data.gov.au/def/placenames/',
-            'label': 'from National Composite Gazetteer of Australia (beta version 0.2):',
+            'label': 'National Composite Gazetteer of Australia (beta version 0.3):',
             'comment': 'The Entity has a name (label) which is a text sting.',
             'value': None
         }
@@ -118,9 +118,14 @@ class Placename(Renderer):
             # set up x y location from database
             self.y = placename[6]
             self.x = placename[7]
-
-            self.hasName['value'] = str(placename[0]) + " (" + str(placename[3]).capitalize() + ")"
-
+            self.wkt = 'POINT(' + str(self.y) + ' ' + str(self.x) + ')'
+            myString = '[ a sf:Point ; geo:asWKT ' +  self.wkt + ' ^ ^ geo: wktLiteral; ];'
+            self.geoGeom = myString
+            self.hasName['uri'] = str(placename[0]) + " (" + str(placename[3]).capitalize() + ")"
+            #print('namexxx', self.hasName)
+            #self.hasName['value'] = str(placename[0])  #short name
+            self.hasPlaceNameOf = placename[0]
+            self.name = placename[0]
             self.featureType['label'] = str(placename[3])
             self.featureType['uri'] = 'http://vocabs.ands.org.au/repository/api/lda/ga/place-type/v1-0/resource?uri=http://pid.geoscience.gov.au/def/voc/ga/PlaceType/' + str(placename[3]).replace(' ','_')
 
@@ -152,7 +157,7 @@ class Placename(Renderer):
             self.thisCell['label'] = str(self.thisDGGScell)
             self.thisCell['uri']= 'http://ec2-52-63-73-113.ap-southeast-2.compute.amazonaws.com/AusPIX-DGGS-dataset/ausPIX/' + str(self.thisDGGScell)
 
-    # maybe should call this function something else - it seems to clash ie Overrides the method in Renderer
+    # maybe should call this function something else - it seems to clash ie Overrides the method in Renderer??
     def render(self):
         if self.view == 'alternates':
             return self._render_alternates_view()   # this function is in Renderer
@@ -167,6 +172,9 @@ class Placename(Renderer):
                 'placename.html',   # uses the placenames.html template send all this data to it.
                 id=self.id,
                 hasName=self.hasName,
+                name = self.name,
+                uri = self.uri,
+                hasPlaceNameOf = self.hasPlaceNameOf,
                 hasPronunciation=self.hasPronunciation,
                 hasFeature = self.featureType,
                 featureType = self.featureType,
@@ -192,28 +200,50 @@ class Placename(Renderer):
         # return NotImplementedError("HTML representation of View '{}' is not implemented.".format(view))
 
     def export_rdf(self):
+
         g = Graph()  # make instance of a RDF graph
-
-        PN = Namespace('http://linked.data.gov.au/def/placename/')   #rdf neamespace declaration
-        g.bind('pn', PN)
-
+        dct = Namespace('http://purl.org/dc/terms/')   #rdf neamespace declaration
+        g.bind('dct', dct)
+        geo = Namespace('http://www.opengis.net/ont/geosparql#')
+        g.bind('geo', geo)
+        myaws = Namespace('http://ec2-52-63-73-113.ap-southeast-2.compute.amazonaws.com/')
+        g.bind('myaws', myaws)
+        owl = Namespace('http://www.w3.org/2002/07/owl#')
+        g.bind('owl', owl)
+        pn = Namespace('http://linked.data.gov.au/def/placename/')
+        g.bind('pn', pn)
+        pn_ext =  Namespace('http://example.org/pn-ext/')
+        g.bind('pn-ext', pn_ext)
+        pt = Namespace('http://pid.geoscience.gov.au/def/voc/ga/PlaceType/')
+        g.bind('pt', pt)
+        sf = Namespace('http://www.opengis.net/ont/sf#')
+        g.bind('sf', sf)
+        rdfs = Namespace('http://www.w3.org/2000/01/rdf-schema#')
+        g.bind('fdfs', rdfs)
+        #
 
         #generate all the data available as rdf for export to rdf file
         me = URIRef(self.uri)   # URIRef is a RDF class
         g.add((me, RDF.type, URIRef('http://linked.data.gov.au/def/placename/PlaceName')))  # PN.PlaceName))
-        g.add((me, PN.hasID, Literal(self.id, datatype=XSD.string)))
-        g.add((me, PN.hasName, Literal(self.hasName['value'], datatype=XSD.string)))
-        g.add((me, PN.longitude, Literal(self.x, datatype=XSD.float )))
-        g.add((me, PN.latitude, Literal(self.y, datatype=XSD.float)))
-        g.add((me, PN.featureType, Literal(self.featureType, datatype=XSD.string)))
-        g.add((me, PN.hasCategory, Literal(self.hasCategory, datatype=XSD.string)))
-        g.add((me, PN.hasGroup, Literal(self.hasGroup, datatype=XSD.string)))
-        g.add((me, PN.hasRegister, Literal(self.register, datatype=XSD.string)))
-        g.add((me, PN.hasNameFormality, Literal(self.hasNameFormality, datatype=XSD.string)))
-        g.add((me, PN.ausPIX_DGGS, Literal(str(self.thisCell), datatype=XSD.string)))
-        g.add((me, PN.supplyDate, Literal(str(self.supplyDate), datatype=XSD.string)))
 
 
+        g.add((me, pn.name, Literal(self.name, datatype=XSD.string)))
+        g.add((me, rdfs.label, Literal(self.name, datatype=XSD.string)))
+        g.add((me, pn.hasPlaceNameFormality, Literal(self.hasNameFormality['uri'], datatype=XSD.anyURI)))
+        g.add((me, dct.identifier, Literal(self.id, datatype=XSD.string)))
+        # g.add((me, pn.longitude, Literal(self.x, datatype=XSD.float )))
+        # g.add((me, pn.latitude, Literal(self.y, datatype=XSD.float)))
+        g.add((me, geo.hasWKT, Literal(self.wkt, datatype=XSD.string)))
+        g.add((me, geo.hasGeometry, Literal(self.wkt, datatype=XSD.string)))
+        g.add((me, geo.hasGeometry2, Literal(self.geoGeom, datatype=XSD.string)))
+        g.add((me, pn.featureType, Literal(self.featureType['uri'], datatype=XSD.anyURI)))
+        g.add((me, pn.hasCategory, Literal(self.hasCategory['uri'], datatype=XSD.anyURI)))
+        g.add((me, pn.hasGroup, Literal(self.hasGroup['uri'], datatype=XSD.anyURI)))
+        g.add((me, pn.register, Literal(self.register['uri'], datatype=XSD.anyURI)))
+        g.add((me, pn.ausPIX_DGGS, Literal(str(self.thisCell['uri']), datatype=XSD.anyURI)))
+        g.add((me, dct.issued, Literal(str(self.supplyDate), datatype=XSD.date)))
+
+        # should identifier be @prefix dct: <http://purl.org/dc/terms/> .
         if self.format == 'text/turtle':
             return Response(
                 g.serialize(format='turtle'),
@@ -225,28 +255,28 @@ class Placename(Renderer):
                 mimetype='application/ld+json'
             )
     # for schema dot org format
-    def export_schemaorg(self):  #this is all for GNAF - needs to adapted to Placenames
-        data = {
-            '@context': 'http://schema.org',
-            '@type': 'Place',
-            'address': {
-                '@type': 'PostalAddress',
-                'streetAddress': self.address_string.split(',')[0],
-                'addressLocality': self.locality_name,
-                'addressRegion': self.state_prefLabel,    #change these for placenames attributes
-                'postalCode': self.postcode,
-                'addressCountry': 'AU'
-            },
-            'geo': {
-                '@type': 'GeoCoordinates',
-                'latitude': self.latitude,                # keep this for placenames?
-                'longitude': self.longitude
-            },
-            'name': 'Geocoded Address ' + self.id
-        }
-
-        #return json.dumps(data, cls=DecimalEncoder) #
-        return json.dumps(data, cls=decimal)  # changed to suit import
+    # def export_schemaorg(self):  #this is all for GNAF - needs to adapted to Placenames
+    #     data = {
+    #         '@context': 'http://schema.org',
+    #         '@type': 'Place',
+    #         'address': {
+    #             '@type': 'PostalAddress',
+    #             'streetAddress': self.address_string.split(',')[0],
+    #             'addressLocality': self.locality_name,
+    #             'addressRegion': self.state_prefLabel,    #change these for placenames attributes
+    #             'postalCode': self.postcode,
+    #             'addressCountry': 'AU'
+    #         },
+    #         'geo': {
+    #             '@type': 'GeoCoordinates',
+    #             'latitude': self.latitude,                # keep this for placenames?
+    #             'longitude': self.longitude
+    #         },
+    #         'name': 'Geocoded Address ' + self.id
+    #     }
+    #
+    #     #return json.dumps(data, cls=DecimalEncoder) #
+    #     return json.dumps(data, cls=decimal)  # changed to suit import
 
 
 if __name__ == '__main__':
