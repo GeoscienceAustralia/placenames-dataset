@@ -1,6 +1,7 @@
 from flask import Blueprint, request, redirect, url_for, Response, render_template, send_file
 import flask
 from placenames.model.placename import Placename
+from placenames.model.place import Place
 from placenames.model.gazetteer import Gazetteer, GAZETTEERS
 from pyldapi import RegisterRenderer
 import placenames._conf as conf
@@ -21,6 +22,8 @@ def home():
 def placenames():
     # Search
     search_string = request.values.get('search')
+    print('search_string')
+    print(search_string)
     # get the total register count from the XML API
     try:
         # get the register length from the online DB
@@ -69,8 +72,68 @@ LIMIT {}
                             page_size_max=1000, 
                             register_template=None, 
                             per_page=per_page, 
-                            search_query=search_string,
-                            search_enabled=True
+                            # search_query=search_string,
+                            # search_enabled=True
+                            ).render()
+
+
+@routes.route('/place/')
+def places():
+    # Search
+    search_string = request.values.get('search')
+    print('search_string')
+    print(search_string)
+    # get the total register count from the XML API
+    try:
+        # get the register length from the online DB
+        sql = '''SELECT COUNT(*) FROM "PLACENAMES"
+'''
+        if search_string:
+            sql += '''WHERE UPPER("ID") LIKE '%{search_string}%' OR UPPER("NAME") LIKE '%{search_string}%';
+'''.format(search_string=search_string.strip().upper())
+        # print(sql)
+        no_of_items = conf.db_select(sql)[0][0]
+
+        page = int(request.values.get('page')) if request.values.get('page') is not None else 1
+        per_page = int(request.values.get('per_page')) if request.values.get(
+            'per_page') is not None else DEFAULT_ITEMS_PER_PAGE
+        offset = (page - 1) * per_page
+        items = []
+        sql = '''SELECT "ID", "NAME" 
+FROM "PLACENAMES"
+'''
+        if search_string:
+            sql += '''WHERE UPPER("ID") LIKE '%{search_string}%' OR UPPER("NAME") LIKE '%{search_string}%'
+'''.format(search_string=search_string.strip().upper())
+
+        sql += '''ORDER BY "AUTHORITY", cast('0' || regexp_replace("AUTH_ID", '\D+', '') as integer), "AUTH_ID"
+OFFSET {}
+LIMIT {}
+'''.format(offset, per_page)
+        # print(sql)
+        for item in conf.db_select(sql):
+            items.append(
+                (item[0], item[1])
+            )
+    except Exception as e:
+        print(e)
+        return Response('The Place Names database is offline', mimetype='text/plain', status=500)
+
+    return RegisterRenderer(request=request,
+                            uri=request.url,
+                            label='Places Register',
+                            comment='A register of Places',
+                            register_items=items,
+                            contained_item_classes=['http://linked.data.gov.au/def/placenames/PlaceName'],
+                            register_total_count=no_of_items,
+                            views=None,
+                            default_view_token=None,
+                            super_register=None,
+                            page_size_max=1000,
+                            register_template=None,
+                            per_page=per_page,
+                            # search_query=search_string,
+                            # search_enabled=True
                             ).render()
 
 #@routes.route('/map/')
@@ -103,6 +166,13 @@ def show_map():
 def placename(placename_id):
     pn = Placename(request, request.base_url)
     return pn.render()
+
+
+@routes.route('/place/<string:placename_id>')
+def place(placename_id):
+    pn = Place(request, request.base_url)
+    return pn.render()
+
 
 @routes.route('/gazetteer/')
 def gazetteers():

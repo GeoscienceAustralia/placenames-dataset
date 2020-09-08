@@ -20,7 +20,7 @@ rdggs = dggs.RHEALPixDGGS()
 #import branca
 
 
-class Placename(Renderer):
+class Place(Renderer):
     """
     This class represents a placename and methods in this class allow a placename to be loaded from the GA placenames database
     and to be exported in a number of formats including RDF, according to the 'PlaceNames Ontology'
@@ -32,23 +32,16 @@ class Placename(Renderer):
         # import pdb
         # pdb.set_trace()
         views = {
-            'PCPN': View(
-                'Place Names View',
-                'This view is the combined view of places and placenmaes delivered by the Place Names dataset in accordance with the '
-                'Place Names Profile',
-                ['text/html', 'text/turtle', 'application/ld+json'],
-                'text/html'
-            ),
             'pn': View(
                 'Place Names View',
-                'This view is the standard view (separating places and placenames) delivered by the Place Names dataset in accordance with the '
+                'This view is the standard view delivered by the Place Names dataset in accordance with the '
                 'Place Names Profile',
                 ['text/html', 'text/turtle', 'application/ld+json'],
                 'text/html'
             )
         }
 
-        super(Placename, self).__init__(request, uri, views, 'PCPN', None)
+        super(Place, self).__init__(request, uri, views, 'pn', None)
 
         self.id = uri.split('/')[-1]
         self.auth_id = self.id.split('_')[-1]
@@ -116,12 +109,15 @@ class Placename(Renderer):
             WHERE "ID" = '{}'
         '''.format(self.id)
         for placename in conf.db_select(q):
+            # for item in placename:
+            #     print(item)
+            #print(placename)
+            #print(placename[0], placename[1], placename[2], placename[3], placename[4], placename[5]), placename[6], placename[7]
             # set up x y location from database
             self.y = placename[6]
             self.x = placename[7]
 
-            # self.hasName['value'] = str(placename[0]) + " (" + str(placename[3]).capitalize() + ")"
-            self.hasName['value'] = str(placename[0])
+            self.hasName['value'] = str(placename[0]) + " (" + str(placename[3]).capitalize() + ")"
 
             self.featureType['label'] = str(placename[3])
             self.featureType['uri'] = 'http://vocabs.ands.org.au/repository/api/lda/ga/place-type/v1-0/resource?uri=http://pid.geoscience.gov.au/def/voc/ga/PlaceType/' + str(placename[3]).replace(' ','_')
@@ -143,6 +139,10 @@ class Placename(Renderer):
             self.register['uri'] = (GAZETTEERS[str(placename[1])]['uri_id'])
             self.register['label'] = (GAZETTEERS[str(placename[1])]['label'])
 
+            #self.register['uri'] = 'http://linked.data.gov.au/dataset/placenames/gazetteer/' + str(placename[1])
+
+            #print('name auth', naming_authorities[str(placename[1])]['label'])
+
             self.supplyDate = placename[2]
             #DGGS function
             resolution = 9
@@ -151,26 +151,21 @@ class Placename(Renderer):
             self.thisCell = rdggs.cell_from_point(resolution, coords, plane=False)  # false = on the elipsoidal curve
 
 
+    # maybe should call this function something else - it seems to clash ie Overrides the method in Renderer
     def render(self):
         # import pdb
         # pdb.set_trace()
         if self.view == 'alternates':
             return self._render_alternates_view()   # this function is in Renderer
         elif self.format in ['text/turtle', 'application/ld+json']:
-            return self.export_rdf(self.view)                # this one exists below
+            return self.export_rdf()                # this one exists below
         else:  # default is HTML response: self.format == 'text/html':
-            return self.export_html(self.view)               # this one exists below
+            return self.export_html()               # this one exists below
 
-    def export_html(self, model_view='PCPN'):
-        # import pdb
-        # pdb.set_trace()
-        if model_view == 'PCPN':
-            html_page = 'placename_pcpn.html'
-        else:
-            html_page = 'placename.html'
+    def export_html(self):
         return Response(        # Response is a Flask class imported at the top of this script
             render_template(     # render_template is also a Flask module
-                html_page,   # uses the placenames.html template send all this data to it.
+                'place.html',   # uses the placenames.html template send all this data to it.
                 id=self.id,
                 hasName=self.hasName,
                 hasPronunciation=self.hasPronunciation,
@@ -210,19 +205,19 @@ class Placename(Renderer):
         else:
             return ''
 
-    def export_rdf(self, model_view='PCPN'):
+    def export_rdf(self):
         g = Graph()  # make instance of a RDF graph
 
         # namespace declarations
         # pName_dataset = URIRef('http://http://ec2-52-63-73-113.ap-southeast-2.compute.amazonaws.com/placenames-dataset/')
+        # pn_dataset = URIRef('http://linked.data.gov.au/dataset/placenames/')
+
         dcterms = Namespace('http://purl.org/dc/terms/')  # already imported
         g.bind('dcterms', dcterms)
         geo = Namespace('http://www.opengis.net/ont/geosparql#')
         g.bind('geo', geo)
         owl = Namespace('http://www.w3.org/2002/07/owl#')
         g.bind('owl', owl)
-        rdfs = Namespace('http://www.w3.org/2000/01/rdf-schema#')
-        g.bind('rdfs', rdfs)
 
         # specific to placename datasdet
         place = Namespace('http://linked.data.gov.au/dataset/placenames/place/')
@@ -251,55 +246,43 @@ class Placename(Renderer):
         g.bind('ptype', ptype)
 
         # build the graphs
+
         official_placename = URIRef('{}{}'.format(pname, self.id))
         this_place = URIRef('{}{}'.format(place, self.id))
-        g.add((official_placename, RDF.type, URIRef(pn + 'OfficialPlaceName')))
-        g.add((official_placename, dcterms.identifier, Literal(self.id, datatype=pn.ID_GAZ)))
-        g.add((official_placename, dcterms.identifier, Literal(self.auth_id, datatype=pn.ID_AUTH)))
-        g.add((official_placename, dcterms.issued, Literal(str(self.supplyDate), datatype=XSD.dateTime)))
-        g.add((official_placename, pn.name, Literal(self.hasName['value'], lang='en-AU')))
-        g.add((official_placename, pn.placeNameOf, this_place))
-        # g.add((official_placename, loci.isMemberOf, Literal(self.register['label'], datatype=XSD.string)))
-        # g.add((official_placename, pn.status, Literal(self.hasNameFormality['label'], datatype=XSD.string)))
-        g.add((official_placename, pn.wasNamedBy, URIRef(self.authority['web'])))
-        g.add((official_placename, rdfs.label, Literal(self.hasName['value'])))
+        # place = URIRef('localhost:5000/place/{}'.format(self.id))
+        g.add((this_place, RDF.type, URIRef(pn + 'Place')))
+        g.add((this_place, dcterms.identifier, Literal(self.id, datatype=pn.ID_GAZ)))
+        g.add((this_place, dcterms.identifier, Literal(self.auth_id, datatype=pn.ID_AUTH)))
 
+        place_point = BNode()
+        g.add((place_point, RDF.type, URIRef(sf + 'Point')))
+        g.add((place_point, geo.asWKT, Literal(self._generate_wkt(), datatype=geo.wktLiteral)))
+        g.add((this_place, geo.hasGeometry, place_point))
 
-        # if pcpn view, add the place info as well
-        if model_view == 'PCPN':
-            # official_placename = URIRef('{}/placename/{}'.format(pname, self.id))
-            # place = URIRef('{}/place/{}'.format(pname, self.id))
-            # place = URIRef('localhost:5000/place/{}'.format(self.id))
-            g.add((this_place, RDF.type, URIRef(pn + 'Place')))
-            g.add((this_place, dcterms.identifier, Literal(self.id, datatype=pn.ID_GAZ)))
-            g.add((this_place, dcterms.identifier, Literal(self.auth_id, datatype=pn.ID_AUTH)))
+        place_dggs = BNode()
+        g.add((place_dggs, RDF.type, URIRef(geo + 'Geometry')))
+        g.add((place_dggs, geo.asDGGS, Literal(self._generate_dggs(), datatype=geox.dggsLiteral)))
+        g.add((this_place, geo.hasGeometry, place_dggs))
 
-            place_point = BNode()
-            g.add((place_point, RDF.type, URIRef(sf + 'Point')))
-            g.add((place_point, geo.asWKT, Literal(self._generate_wkt(), datatype=geo.wktLiteral)))
-            g.add((this_place, geo.hasGeometry, place_point))
+        g.add((this_place, pn.hasPlaceClassification, URIRef(ptype + self.featureType['label'])))
+        g.add((this_place, pn.hasPlaceClassification, URIRef(ptype + self.hasGroup['label'])))
+        g.add((this_place, pn.hasPlaceClassification, URIRef(ptype + self.hasCategory['label'])))
+        g.add((this_place, pn.hasPlaceName, official_placename))
 
-            place_dggs = BNode()
-            g.add((place_dggs, RDF.type, URIRef(geo + 'Geometry')))
-            g.add((place_dggs, geo.asDGGS, Literal(self._generate_dggs(), datatype=geox.dggsLiteral)))
-            g.add((this_place, geo.hasGeometry, place_dggs))
-
-            g.add((this_place, pn.hasPlaceClassification, URIRef(ptype + self.featureType['label'])))
-            g.add((this_place, pn.hasPlaceClassification, URIRef(ptype + self.hasCategory['label'])))
-            g.add((this_place, pn.hasPlaceClassification, URIRef(ptype + self.hasGroup['label'])))
-            g.add((this_place, pn.hasPlaceName, official_placename))
 
 
         if self.format == 'text/turtle':
             return Response(
                 g.serialize(format='turtle'),
-                mimetype = 'text/turtle'
+                mimetype='text/turtle'
             )
-        else: # JSON-LD
+        else:  # JSON-LD
             return Response(
                 g.serialize(format='json-ld'),
-                mimetype = 'application/ld+json'
+                mimetype='application/ld+json'
             )
+
+
 
 
     # for schema dot org format

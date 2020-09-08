@@ -127,6 +127,7 @@ class Gazetteer(Renderer):
                 ['text/html', 'text/turtle', 'application/ld+json'],
                 'text/html'
             )
+
         }
 
         super(Gazetteer, self).__init__(request, uri, views, 'gz', None)
