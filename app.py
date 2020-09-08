@@ -28,5 +28,5 @@ if __name__ == '__main__':
     # run the Flask app
     app.run(debug=conf.DEBUG, threaded=True, use_reloader=False)
 
-if __name__ == "__main__":
-   app.run()
+# if __name__ == "__main__":
+#    app.run()
