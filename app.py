@@ -15,8 +15,6 @@ if __name__ == '__main__':
                         level=logging.DEBUG,
                         datefmt='%Y-%m-%d %H:%M:%S',
                         format='%(asctime)s %(levelname)s %(filename)s:%(lineno)s %(message)s')
-
-    # pyldapi.setup(app, conf.APP_DIR, conf.DATA_URI_PREFIX)
     
     # Write all upper-case keys with string values in conf to log file
     logger.debug('conf = {}'.format(pformat({key: value 
@@ -27,6 +25,3 @@ if __name__ == '__main__':
 
     # run the Flask app
     app.run(debug=conf.DEBUG, threaded=True, use_reloader=False)
-
-# if __name__ == "__main__":
-#    app.run()

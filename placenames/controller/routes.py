@@ -1,12 +1,10 @@
-from flask import Blueprint, request, redirect, url_for, Response, render_template, send_file
-import flask
+from flask import Blueprint, request, Response, render_template
 from placenames.model.placename import Placename
 from placenames.model.place import Place
 from placenames.model.gazetteer import Gazetteer, GAZETTEERS
 from pyldapi import RegisterRenderer
 import placenames._conf as conf
 import folium
-import os
 print(__name__)
 routes = Blueprint('controller', __name__)
 
@@ -20,37 +18,32 @@ def home():
 
 @routes.route('/placename/')
 def placenames():
-    # Search
+    # Search specific items using keywords
     search_string = request.values.get('search')
-    print('search_string')
-    print(search_string)
-    # get the total register count from the XML API
+
     try:
         # get the register length from the online DB
-        sql = '''SELECT COUNT(*) FROM "PLACENAMES"
-'''
+        sql = 'SELECT COUNT(*) FROM "PLACENAMES"'
         if search_string:
             sql += '''WHERE UPPER("ID") LIKE '%{search_string}%' OR UPPER("NAME") LIKE '%{search_string}%';
-'''.format(search_string=search_string.strip().upper())
-        #print(sql)
+                   '''.format(search_string=search_string.strip().upper())
+
         no_of_items = conf.db_select(sql)[0][0]
 
         page = int(request.values.get('page')) if request.values.get('page') is not None else 1
-        per_page = int(request.values.get('per_page')) if request.values.get('per_page') is not None else DEFAULT_ITEMS_PER_PAGE
+        per_page = int(request.values.get('per_page')) \
+                   if request.values.get('per_page') is not None else DEFAULT_ITEMS_PER_PAGE
         offset = (page - 1) * per_page
-        items = []
-        sql = '''SELECT "ID", "NAME" 
-FROM "PLACENAMES"
-'''
+
+        # get the id and name for each placename record in the database
+        sql = '''SELECT "ID", "NAME" FROM "PLACENAMES"'''
         if search_string:
             sql += '''WHERE UPPER("ID") LIKE '%{search_string}%' OR UPPER("NAME") LIKE '%{search_string}%'
-'''.format(search_string=search_string.strip().upper())
-            
+                   '''.format(search_string=search_string.strip().upper())
         sql += '''ORDER BY "AUTHORITY", cast('0' || regexp_replace("AUTH_ID", '\D+', '') as integer), "AUTH_ID"
-OFFSET {}
-LIMIT {}
-'''.format(offset, per_page)
-        #print(sql)
+                OFFSET {} LIMIT {}'''.format(offset, per_page)
+
+        items = []
         for item in conf.db_select(sql):
             items.append(
                 (item[0], item[1])
@@ -72,45 +65,37 @@ LIMIT {}
                             page_size_max=1000, 
                             register_template=None, 
                             per_page=per_page, 
-                            # search_query=search_string,
-                            # search_enabled=True
+                            search_query=search_string,
+                            search_enabled=True
                             ).render()
 
 
 @routes.route('/place/')
 def places():
-    # Search
+    # Search specific items using keywords
     search_string = request.values.get('search')
-    print('search_string')
-    print(search_string)
     # get the total register count from the XML API
     try:
         # get the register length from the online DB
-        sql = '''SELECT COUNT(*) FROM "PLACENAMES"
-'''
+        sql = '''SELECT COUNT(*) FROM "PLACENAMES"'''
         if search_string:
             sql += '''WHERE UPPER("ID") LIKE '%{search_string}%' OR UPPER("NAME") LIKE '%{search_string}%';
-'''.format(search_string=search_string.strip().upper())
-        # print(sql)
+                   '''.format(search_string=search_string.strip().upper())
         no_of_items = conf.db_select(sql)[0][0]
 
         page = int(request.values.get('page')) if request.values.get('page') is not None else 1
         per_page = int(request.values.get('per_page')) if request.values.get(
             'per_page') is not None else DEFAULT_ITEMS_PER_PAGE
         offset = (page - 1) * per_page
-        items = []
-        sql = '''SELECT "ID", "NAME" 
-FROM "PLACENAMES"
-'''
+
+        sql = '''SELECT "ID", "NAME" FROM "PLACENAMES"'''
         if search_string:
             sql += '''WHERE UPPER("ID") LIKE '%{search_string}%' OR UPPER("NAME") LIKE '%{search_string}%'
-'''.format(search_string=search_string.strip().upper())
-
+                   '''.format(search_string=search_string.strip().upper())
         sql += '''ORDER BY "AUTHORITY", cast('0' || regexp_replace("AUTH_ID", '\D+', '') as integer), "AUTH_ID"
-OFFSET {}
-LIMIT {}
-'''.format(offset, per_page)
-        # print(sql)
+                OFFSET {} LIMIT {}'''.format(offset, per_page)
+
+        items = []
         for item in conf.db_select(sql):
             items.append(
                 (item[0], item[1])
@@ -132,13 +117,9 @@ LIMIT {}
                             page_size_max=1000,
                             register_template=None,
                             per_page=per_page,
-                            # search_query=search_string,
-                            # search_enabled=True
+                            search_query=search_string,
+                            search_enabled=True
                             ).render()
-
-#@routes.route('/map/')
-#def map():
-#    print('map here')
 
 
 @routes.route('/map')
@@ -159,7 +140,6 @@ def show_map():
                   tooltip=tooltip).add_to(folium_map),
 
     return folium_map.get_root().render()
-
 
 
 @routes.route('/placename/<string:placename_id>')

@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
 import decimal
 import json
-import os
 from flask import render_template, Response
 
-import folium
 import placenames._conf as conf
 from pyldapi import Renderer, View
 from rdflib import Graph, URIRef, RDF, XSD, Namespace, Literal, BNode
@@ -17,20 +15,15 @@ from rhealpixdggs import dggs
 rdggs = dggs.RHEALPixDGGS()
 
 
-#import branca
-
-
 class Place(Renderer):
     """
-    This class represents a placename and methods in this class allow a placename to be loaded from the GA placenames database
-    and to be exported in a number of formats including RDF, according to the 'PlaceNames Ontology'
+    This class represents a placename and methods in this class allow a placename to be loaded from the GA placenames
+    database and to be exported in a number of formats including RDF, according to the 'PlaceNames Ontology'
 
     [[and an expression of the Dublin Core ontology, HTML, XML in the form according to the AS4590 XML schema.]]??
     """
 
     def __init__(self, request, uri):
-        # import pdb
-        # pdb.set_trace()
         views = {
             'pn': View(
                 'Place Names View',
@@ -73,7 +66,6 @@ class Place(Renderer):
             'uri': None
         }
 
-
         self.wasNamedBy = {
             'label': None,
             'uri': None
@@ -93,7 +85,7 @@ class Place(Renderer):
         self.modifiedDate = None
 
         self.hasPronunciation = None   # None == don't display
-        # pronunciation will only be displyed on webpage if it exists
+        # pronunciation will only be displayed on webpage if it exists
 
         q = '''
             SELECT 
@@ -108,11 +100,8 @@ class Place(Renderer):
             FROM "PLACENAMES"
             WHERE "ID" = '{}'
         '''.format(self.id)
+
         for placename in conf.db_select(q):
-            # for item in placename:
-            #     print(item)
-            #print(placename)
-            #print(placename[0], placename[1], placename[2], placename[3], placename[4], placename[5]), placename[6], placename[7]
             # set up x y location from database
             self.y = placename[6]
             self.x = placename[7]
@@ -120,41 +109,36 @@ class Place(Renderer):
             self.hasName['value'] = str(placename[0]) + " (" + str(placename[3]).capitalize() + ")"
 
             self.featureType['label'] = str(placename[3])
-            self.featureType['uri'] = 'http://vocabs.ands.org.au/repository/api/lda/ga/place-type/v1-0/resource?uri=http://pid.geoscience.gov.au/def/voc/ga/PlaceType/' + str(placename[3]).replace(' ','_')
+            self.featureType['uri'] = 'http://vocabs.ands.org.au/repository/api/lda/ga/place-type/v1-0/resource?' \
+                                      'uri=http://pid.geoscience.gov.au/def/voc/ga/PlaceType/' + str(placename[3])\
+                                      .replace(' ','_')
 
-            #self.hasCategory = str(placename[4])
             self.hasCategory['label'] = str(placename[4])
-            self.hasCategory['uri'] = 'http://vocabs.ands.org.au/repository/api/lda/ga/place-type/v1-0/resource?uri=http://pid.geoscience.gov.au/def/voc/ga/PlaceType/' + str(placename[4]).replace(' ','_')
+            self.hasCategory['uri'] = 'http://vocabs.ands.org.au/repository/api/lda/ga/place-type/v1-0/resource?' \
+                                      'uri=http://pid.geoscience.gov.au/def/voc/ga/PlaceType/' + str(placename[4])\
+                                      .replace(' ','_')
 
-            #self.hasGroup = str(placename[5])
             self.hasGroup['label'] = str(placename[5])
-            self.hasGroup['uri'] = 'http://vocabs.ands.org.au/repository/api/lda/ga/place-type/v1-0/resource?uri=http://pid.geoscience.gov.au/def/voc/ga/PlaceType/' + str(placename[5]).replace(' ','_')
+            self.hasGroup['uri'] = 'http://vocabs.ands.org.au/repository/api/lda/ga/place-type/v1-0/resource?' \
+                                   'uri=http://pid.geoscience.gov.au/def/voc/ga/PlaceType/' + str(placename[5])\
+                                   .replace(' ','_')
 
             self.authority['label'] = (NAME_AUTHORITIES[str(placename[1])]['label'])
             self.authority['web'] = (NAME_AUTHORITIES[str(placename[1])]['web'])
             self.email = (NAME_AUTHORITIES[str(placename[1])]['email'])
 
-            #print('authority', self.authority)
-
             self.register['uri'] = (GAZETTEERS[str(placename[1])]['uri_id'])
             self.register['label'] = (GAZETTEERS[str(placename[1])]['label'])
 
-            #self.register['uri'] = 'http://linked.data.gov.au/dataset/placenames/gazetteer/' + str(placename[1])
-
-            #print('name auth', naming_authorities[str(placename[1])]['label'])
-
             self.supplyDate = placename[2]
+
             #DGGS function
             resolution = 9
-            # coords = (longi, lati)  # format required like this
+            # coords = (longi, lati)  format required like this
             coords = (self.x, self.y)
             self.thisCell = rdggs.cell_from_point(resolution, coords, plane=False)  # false = on the elipsoidal curve
 
-
-    # maybe should call this function something else - it seems to clash ie Overrides the method in Renderer
     def render(self):
-        # import pdb
-        # pdb.set_trace()
         if self.view == 'alternates':
             return self._render_alternates_view()   # this function is in Renderer
         elif self.format in ['text/turtle', 'application/ld+json']:
@@ -182,8 +166,6 @@ class Place(Renderer):
                 longitude = self.x,
                 latitude = self.y,
                 ausPIX_DGGS = self.thisCell
-
-
                 # schemaorg=self.export_schemaorg()
             ),
             status=200,
@@ -209,9 +191,6 @@ class Place(Renderer):
         g = Graph()  # make instance of a RDF graph
 
         # namespace declarations
-        # pName_dataset = URIRef('http://http://ec2-52-63-73-113.ap-southeast-2.compute.amazonaws.com/placenames-dataset/')
-        # pn_dataset = URIRef('http://linked.data.gov.au/dataset/placenames/')
-
         dcterms = Namespace('http://purl.org/dc/terms/')  # already imported
         g.bind('dcterms', dcterms)
         geo = Namespace('http://www.opengis.net/ont/geosparql#')
@@ -223,8 +202,8 @@ class Place(Renderer):
         place = Namespace('http://linked.data.gov.au/dataset/placenames/place/')
         g.bind('place', place)
         pname = URIRef('http://linked.data.gov.au/dataset/placenames/placenames/')
-        g.bind('pname', pname)  # made the cell ID the subject of the triples
-        # auspix = URIRef('http://ec2-52-63-73-113.ap-southeast-2.compute.amazonaws.com/AusPIX-DGGS-dataset/')
+        g.bind('pname', pname)
+        # made the cell ID the subject of the triples
         auspix = URIRef('http://ec2-52-63-73-113.ap-southeast-2.compute.amazonaws.com/AusPIX-DGGS-dataset/')
         g.bind('auspix', auspix)
         pn = Namespace('http://linked.data.gov.au/def/placenames/')
@@ -232,21 +211,13 @@ class Place(Renderer):
 
         geox = Namespace('http://linked.data.gov.au/def/geox#')
         g.bind('geox', geox)
-        # rdfs = Namespace('http://www.w3.org/2001/XMLSchema#')    # already imported at top
-        # g.bind('rdfs', RDFS)    # (not used ??)
-        # xsd = Namespace('http://www.w3.org/XML/XMLSchema#')     # already imported
         g.bind('xsd', XSD)
-        # data = Namespace('http://linked.data.gov.au/def/datatype/')
-        # g.bind('data', data)
-        # loci = Namespace('http://linked.data.gov.au/def/loci#')
-        # g.bind('loci', loci)
         sf = Namespace('http://www.opengis.net/ont/sf#')
         g.bind('sf', sf)
         ptype = Namespace('http://pid.geoscience.gov.au/def/voc/ga/PlaceType/')
         g.bind('ptype', ptype)
 
         # build the graphs
-
         official_placename = URIRef('{}{}'.format(pname, self.id))
         this_place = URIRef('{}{}'.format(place, self.id))
         # place = URIRef('localhost:5000/place/{}'.format(self.id))
@@ -269,8 +240,6 @@ class Place(Renderer):
         g.add((this_place, pn.hasPlaceClassification, URIRef(ptype + self.hasCategory['label'])))
         g.add((this_place, pn.hasPlaceName, official_placename))
 
-
-
         if self.format == 'text/turtle':
             return Response(
                 g.serialize(format='turtle'),
@@ -281,8 +250,6 @@ class Place(Renderer):
                 g.serialize(format='json-ld'),
                 mimetype='application/ld+json'
             )
-
-
 
 
     # for schema dot org format
@@ -306,14 +273,9 @@ class Place(Renderer):
             'name': 'Geocoded Address ' + self.id
         }
 
-        #return json.dumps(data, cls=DecimalEncoder) #
         return json.dumps(data, cls=decimal)  # changed to suit import
 
 
 if __name__ == '__main__':
-    # a = Address('GANSW703902211', focus=True)  # not functional because from GNAF - this is placenames
-    # print(a.export_rdf().decode('utf-8'))
-
-    print('main process has not been built yet - when build it will test ask for a placename like the code Gnaf above')
-
+    pass
 
