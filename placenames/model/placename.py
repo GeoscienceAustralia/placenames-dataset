@@ -23,20 +23,23 @@ class Placename(Renderer):
     """
 
     def __init__(self, request, uri):
+        format_list = ['text/html', 'text/turtle', 'application/ld+json', 'application/rdf+xml']
         views = {
             'NCGA': View(
                 'Place Names View',
-                'This view is the combined view of places and placenmaes delivered by the Place Names dataset in '
+                'This is the combined view of places and placenmaes delivered by the Place Names dataset in '
                 'accordance with the Place Names Profile',
-                ['text/html', 'text/turtle', 'application/ld+json'],
-                'text/html'
+                format_list,
+                'text/html',
+                namespace='http://linked.data.gov.au/def/placenames/'
             ),
             'pn': View(
                 'Place Names View',
-                'This view is the standard view (separating places and placenames) delivered by the Place Names dataset'
+                'This view is only for placenames delivered by the Place Names dataset'
                 ' in accordance with the Place Names Profile',
-                ['text/html', 'text/turtle', 'application/ld+json'],
-                'text/html'
+                format_list,
+                'text/html',
+                namespace='http://linked.data.gov.au/def/placenames/'
             )
         }
 
@@ -114,17 +117,17 @@ class Placename(Renderer):
 
             self.hasName['value'] = str(placename[0])
 
-            self.featureType['label'] = str(placename[3])
+            self.featureType['label'] = '_'.join(str(placename[3]).split())
             self.featureType['uri'] = 'http://vocabs.ands.org.au/repository/api/lda/ga/place-type/v1-0/resource?' \
                                       'uri=http://pid.geoscience.gov.au/def/voc/ga/PlaceType/' + str(placename[3])\
                                       .replace(' ','_')
 
-            self.hasCategory['label'] = str(placename[4])
+            self.hasCategory['label'] = '_'.join(str(placename[4]).split())
             self.hasCategory['uri'] = 'http://vocabs.ands.org.au/repository/api/lda/ga/place-type/v1-0/resource?' \
                                       'uri=http://pid.geoscience.gov.au/def/voc/ga/PlaceType/' + str(placename[4])\
                                       .replace(' ','_')
 
-            self.hasGroup['label'] = str(placename[5])
+            self.hasGroup['label'] = '_'.join(str(placename[5]).split())
             self.hasGroup['uri'] = 'http://vocabs.ands.org.au/repository/api/lda/ga/place-type/v1-0/resource?' \
                                    'uri=http://pid.geoscience.gov.au/def/voc/ga/PlaceType/' + str(placename[5])\
                                    .replace(' ','_')
@@ -147,7 +150,7 @@ class Placename(Renderer):
     def render(self):
         if self.view == 'alternates':
             return self._render_alternates_view()   # this function is in Renderer
-        elif self.format in ['text/turtle', 'application/ld+json']:
+        elif self.format in ['text/turtle', 'application/ld+json', 'application/rdf+xml']:
             return self.export_rdf(self.view)                # this one exists below
         else:  # default is HTML response: self.format == 'text/html':
             return self.export_html(self.view)               # this one exists below
@@ -197,6 +200,7 @@ class Placename(Renderer):
             return '{}'.format(self.thisCell)
         else:
             return ''
+
 
     def export_rdf(self, model_view='NCGA'):
         g = Graph()  # make instance of a RDF graph
@@ -267,6 +271,11 @@ class Placename(Renderer):
             return Response(
                 g.serialize(format='turtle'),
                 mimetype = 'text/turtle'
+            )
+        elif self.format == 'application/rdf+xml':
+            return Response(
+                g.serialize(format='application/rdf+xml'),
+                mimetype = 'application/rdf+xml'
             )
         else: # JSON-LD
             return Response(
