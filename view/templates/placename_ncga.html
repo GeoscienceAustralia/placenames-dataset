@@ -1,0 +1,71 @@
+
+{% extends "layout.html" %}
+
+
+
+{% block content %}
+    <style>
+        dt {font-weight: bold;}
+    </style>
+
+
+
+    <dl>
+        <dt><i><a title="{{ hasName['comment'] }}" href="{{ hasName['uri'] }}">{{ hasName['label'] }}</a></i></dt>
+        <dd><h2>{{ hasName['value'] }}</h2></dd>
+
+        <h4>Placename {{ id }}</h4>
+        <p><code>{{ uri }}</code></p>
+
+
+        <iframe id="inlineFrameMap"
+            title="Map for {{ hasName['value'] }}"
+            width="1150"
+            height="250"
+            src="{{ url_for('controller.show_map') }}?name={{ hasName['value']|urlencode }}&x={{ longitude }}&y={{ latitude }}">
+
+        </iframe>
+
+        {%  if hasPronunciation is not none %}
+        <dt>pronunciation:</dt>
+        <dd><em>"{{ hasPronunciation }}"</em></dd>
+        {%  endif %}
+
+        <dt>Feature type:</dt><dd>
+        <dd><a href="{{ featureType['uri'] }}">{{ featureType['label'] }}</a></dd>
+
+        <dt>Feature Category:</dt>
+        <dd><a href="{{ hasCategory['uri'] }}">{{ hasCategory['label'] }}</a></dd>
+
+        <dt>Feature Group:</dt>
+        <dd><a href="{{ hasGroup['uri'] }}">{{ hasGroup['label'] }}</a></dd>
+
+        <dt>Position Lat Long:</dt>
+        <dd><em>{{ latitude, longitude }}</em></dd>
+
+        <dt>AusPIX DGGS location (experimental):</dt>
+        <dd><em>{{ ausPIX_DGGS }}</em></dd>
+
+        <dt>Registry:</dt>
+        <dd><a href="{{ register['uri'] }}">{{ register['label'] }}</a></dd>
+
+        <dt>Naming authority:</dt>
+        <dd><a href="{{ authority['web'] }}">{{ authority['label'] }}</a></dd>
+        <dd>{{ authority_email }} </dd>
+
+        <dt>Name formality:</dt>
+        <dd><a href="{{ hasNameFormality['uri'] }}">{{ hasNameFormality['label'] }}</a></dd>
+
+        <dt>Data Supply Date:</dt>
+        <dd>{{ supplyDate.strftime('%Y-%m-%d') }}</dd>
+    </dl>
+    <p>
+        Alternative views and formats for this resource:
+    </p>
+    <ul>
+        <li><a href="?_profile=alt">Alternate profiles</a></li>
+    </ul>
+{% endblock %}
+
+
+

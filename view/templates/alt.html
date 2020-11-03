@@ -6,7 +6,7 @@
     {% if class_uri %}
         <h3>Alternates view of a <a href="{{ class_uri }}">{{ class_uri }}</a></h3>
     {% else %}
-        <h3>Alternates view</h3>
+        <h3>Alternates profile</h3>
     {% endif %}
     {% if instance_uri %}
         <h4>Instance <a href="{{ instance_uri }}">{{ instance_uri }}</a></h4>
@@ -14,25 +14,25 @@
     <!--<table class="alternates">-->
     <!--<tbody>-->
     <table class="pretty">
-    <tr><th>View</th><th>Formats</th><th>View Namespace</th><th>View Description</th></tr>
-    {% for v, vals in views.items() %}
+    <tr><th>Profile</th><th>Formats</th><th>Profile Namespace</th><th>Profile Description</th></tr>
+    {% for v, vals in profiles.items() %}
         <tr>
             {% if default_view_token == v %}
-                <td><strong><a href="{{ request.base_url }}?_view={{ v }}">{{ v }}</a></strong>&nbsp;&ast;</td>
+                <td><strong><a href="{{ request.base_url }}?_profile={{ v }}">{{ v }}</a></strong>&nbsp;&ast;</td>
             {% else %}
-                <td><a href="{{ request.base_url }}?_view={{ v }}">{{ v }}</a></td>
+                <td><a href="{{ request.base_url }}?_profile={{ v }}">{{ v }}</a></td>
             {% endif %}
             <td>
-            {% for f in vals['formats'] %}
-                {% if 'default_format' in vals and f == vals['default_format'] %}
-                    <strong><a href="{{ request.base_url }}?_view={{ v }}&_format={{ f }}">{{ f }}</a>&nbsp;&ast;</strong>
+            {% for f in vals['mediatypes'] %}
+                {% if 'default_mediatype' in vals and f == vals['default_mediatype'] %}
+                    <strong><a href="{{ request.base_url }}?_profile={{ v }}&_mediatype={{ f }}">{{ f }}</a>&nbsp;&ast;</strong>
                 {% else %}
-                    <a href="{{ request.base_url }}?_view={{ v }}&_format={{ f }}">{{ f }}</a>
+                    <a href="{{ request.base_url }}?_profile={{ v }}&_mediatype={{ f }}">{{ f }}</a>
                 {% endif %}
-                {% if loop.index != vals['formats']|length %}<br />{% endif %}
+                {% if loop.index != vals['mediatypes']|length %}<br />{% endif %}
             {% endfor %}
             </td>
-            <td>{{ vals['namespace'] }}</td>
+            <td>{{ vals['uri'] }}</td>
             <td>{{ vals['comment'] }}</td>
         </tr>
     {% endfor %}

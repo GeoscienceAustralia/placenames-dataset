@@ -33,7 +33,7 @@
             		{% endif -%}   
                              
             		<ul>
-                    {%- for item in register_items -%}
+                    {%- for item in members -%}
                         {%- if item is not string -%}
                         <li><a href="{{ item[0] }}">{{ item[0] }} - {{ item[1] }}</a></li>
                         {%- else -%}
@@ -57,8 +57,10 @@ Link:   &lt;http://example.com/reg/?per_page=50&gt; rel="first",
     &lt;http://example.com/reg/?per_page=50&page=10&gt; rel="last"
                     </pre>
                     <p>If you want to page through the whole collection, you should start at <code>first</code> and follow the link headers until you reach <code>last</code> or until there is no <code>last</code> link given. You shouldn't try to calculate each <code>page</code> query string argument yourself.</p>
-                    <h3>Alternate views</h3>
-                    <p>Different views of this register of objects are listed at its <a href="{{ uri }}?_view=alternates">Alternate views</a> page.</p>
+                    <h3>Alternate profiles</h3>
+                    <!--<p>Different views of this register of objects are listed at its <a href="{{ uri }}?_view=alternates">Alternate views</a> page.</p>-->
+                    <p>Different views of this register of objects are listed at its <a href="{{ uri }}?_profile=alt">Alternate profiles</a> page.</p>
+
                 </td>
             </tr>
             {%  if pagination.links -%}
