@@ -1,7 +1,7 @@
 import logging
 from flask import Flask
-from placenames.controller import routes
-import placenames._conf as conf
+from controller import routes
+import conf
 from pprint import pformat
 
 app = Flask(__name__, template_folder=conf.TEMPLATES_DIR, static_folder=conf.STATIC_DIR)
