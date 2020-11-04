@@ -226,7 +226,7 @@ class Place(Renderer):
 
         place_dggs = BNode()
         g.add((place_dggs, RDF.type, URIRef(geo + 'Geometry')))
-        g.add((place_dggs, geo.asDGGS, Literal(self._generate_dggs(), datatype=geox.dggsLiteral)))
+        g.add((place_dggs, geox.asDGGS, Literal(self._generate_dggs(), datatype=geox.dggsLiteral)))
         g.add((this_place, geo.hasGeometry, place_dggs))
 
         g.add((this_place, pn.hasPlaceClassification, URIRef(ptype + self.featureType['label'])))
