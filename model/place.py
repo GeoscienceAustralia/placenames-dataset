@@ -40,9 +40,14 @@ class Place(Renderer):
 
         self.hasName = {
             'uri': 'http://linked.data.gov.au/def/placenames/',
-            'label': 'from National Composite Gazetteer of Australia (beta version 0.2):',
+            'label': 'from National Composite Gazetteer of Australia (beta version 0.5):',
             'comment': 'The Entity has a name (label) which is a text sting.',
             'value': None
+        }
+
+        self.thisCell = {
+            'label': None,
+            'uri': None
         }
 
         self.register = {
@@ -131,10 +136,13 @@ class Place(Renderer):
 
             self.supplyDate = placename[2]
 
-            #DGGS function
+            # DGGS function
+            DGGS_uri = 'http://ec2-52-63-73-113.ap-southeast-2.compute.amazonaws.com/AusPIX-DGGS-dataset/ausPIX/'
             resolution = 9
             coords = (self.x, self.y)
-            self.thisCell = rdggs.cell_from_point(resolution, coords, plane=False)  # false = on the elipsoidal curve
+            self.thisDGGSCell = rdggs.cell_from_point(resolution, coords, plane=False)  #false = on the elipsoidal curve
+            self.thisCell['label'] = str(self.thisDGGSCell)
+            self.thisCell['uri'] = '{}{}'.format(DGGS_uri, str(self.thisDGGSCell))
 
     def render(self):
         if self.profile == 'alt':

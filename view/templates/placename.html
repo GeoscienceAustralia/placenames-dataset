@@ -17,35 +17,6 @@
         <h4>Placename {{ id }}</h4>
         <p><code>{{ uri }}</code></p>
 
-
-        <!--<iframe id="inlineFrameMap"-->
-            <!--title="Map for {{ hasName['value'] }}"-->
-            <!--width="1150"-->
-            <!--height="250"-->
-            <!--src="{{ url_for('controller.show_map') }}?name={{ hasName['value']|urlencode }}&x={{ longitude }}&y={{ latitude }}">-->
-
-        <!--</iframe>-->
-
-        <!--{%  if hasPronunciation is not none %}-->
-        <!--<dt>pronunciation:</dt>-->
-        <!--<dd><em>"{{ hasPronunciation }}"</em></dd>-->
-        <!--{%  endif %}-->
-
-        <!--<dt>Feature type:</dt><dd>-->
-        <!--<dd><a href="{{ featureType['uri'] }}">{{ featureType['label'] }}</a></dd>-->
-
-        <!--<dt>Feature Category:</dt>-->
-        <!--<dd><a href="{{ hasCategory['uri'] }}">{{ hasCategory['label'] }}</a></dd>-->
-
-        <!--<dt>Feature Group:</dt>-->
-        <!--<dd><a href="{{ hasGroup['uri'] }}">{{ hasGroup['label'] }}</a></dd>-->
-
-        <!--<dt>Position Lat Long:</dt>-->
-        <!--<dd><em>{{ latitude, longitude }}</em></dd>-->
-
-        <!--<dt>AusPIX DGGS location (experimental):</dt>-->
-        <!--<dd><em>{{ ausPIX_DGGS }}</em></dd>-->
-
         <dt>Registry:</dt>
         <dd><a href="{{ register['uri'] }}">{{ register['label'] }}</a></dd>
 

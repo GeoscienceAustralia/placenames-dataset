@@ -2,17 +2,15 @@
 
 {% block content %}
     <h2>National Composite Gazetteer of Australia </h2>
-    <h4>API Beta version 0.2</h4>
+    <h4>API Beta version 0.5</h4>
     {% if class_uri %}
-        <h3>Alternates view of a <a href="{{ class_uri }}">{{ class_uri }}</a></h3>
+        <h3>Alternate view of a <a href="{{ class_uri }}">{{ class_uri }}</a></h3>
     {% else %}
-        <h3>Alternates profile</h3>
+        <h3>Alternate profiles</h3>
     {% endif %}
     {% if instance_uri %}
         <h4>Instance <a href="{{ instance_uri }}">{{ instance_uri }}</a></h4>
     {% endif %}
-    <!--<table class="alternates">-->
-    <!--<tbody>-->
     <table class="pretty">
     <tr><th>Profile</th><th>Formats</th><th>Profile Namespace</th><th>Profile Description</th></tr>
     {% for v, vals in profiles.items() %}
@@ -37,9 +35,7 @@
         </tr>
     {% endfor %}
     </table>
-    <!--</tbody>-->
     <tfoot><tr><td colspan="4"><sub>&ast; = default</sub></td></tr></tfoot>
-    <!--</table>-->
 
 
 {% endblock %}

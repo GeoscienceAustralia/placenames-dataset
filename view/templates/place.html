@@ -44,20 +44,7 @@
         <dd><em>{{ latitude, longitude }}</em></dd>
 
         <dt>AusPIX DGGS location (experimental):</dt>
-        <dd><em>{{ ausPIX_DGGS }}</em></dd>
-
-        <!--<dt>Registry:</dt>-->
-        <!--<dd><a href="{{ register['uri'] }}">{{ register['label'] }}</a></dd>-->
-
-        <!--<dt>Naming authority:</dt>-->
-        <!--<dd><a href="{{ authority['web'] }}">{{ authority['label'] }}</a></dd>-->
-        <!--<dd>{{ authority_email }} </dd>-->
-
-        <!--<dt>Name formality:</dt>-->
-        <!--<dd><a href="{{ hasNameFormality['uri'] }}">{{ hasNameFormality['label'] }}</a></dd>-->
-
-        <!--<dt>Data Supply Date:</dt>-->
-        <!--<dd>{{ supplyDate.strftime('%Y-%m-%d') }}</dd>-->
+        <dd><a href="{{ ausPIX_DGGS['uri'] }}">{{ ausPIX_DGGS['label'] }}</a></dd>
     </dl>
     <p>
         Alternative views and formats for this resource:
