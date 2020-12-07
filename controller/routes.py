@@ -15,7 +15,7 @@ def home():
     return render_template('home.html')
 
 
-@routes.route('/placename/')
+@routes.route('/placenames/')
 def placenames():
     # Search specific items using keywords
     search_string = request.values.get('search')
@@ -70,7 +70,7 @@ def placenames():
                             ).render()
 
 
-@routes.route('/place/')
+@routes.route('/places/')
 def places():
     # Search specific items using keywords
     search_string = request.values.get('search')
@@ -143,13 +143,13 @@ def show_map():
     return folium_map.get_root().render()
 
 
-@routes.route('/placename/<string:placename_id>')
+@routes.route('/placenames/<string:placename_id>')
 def placename(placename_id):
     pn = Placename(request, request.base_url)
     return pn.render()
 
 
-@routes.route('/place/<string:placename_id>')
+@routes.route('/places/<string:placename_id>')
 def place(placename_id):
     pn = Place(request, request.base_url)
     return pn.render()
