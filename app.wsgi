@@ -1,6 +1,6 @@
 import sys
-sys.path.insert(0, '/var/www/placenames-dataset/placenames')
-sys.path.insert(0, '/var/www/placenames-dataset')
-sys.path.insert(0, '/var/www/AusPIX_DGGS')
+sys.path.insert(0, '/var/www/dataset/placenames')
+sys.path.insert(0, '/var/www/dataset/places')
+sys.path.insert(0, '/var/www/dataset')
 
 from app import app as application
