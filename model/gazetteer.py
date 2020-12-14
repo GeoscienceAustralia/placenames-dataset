@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 
-GAZETTEER_URI_PREFIX = 'http://linked.data.gov.au/dataset/placenames/gazetteer/'
-
 # setup a dictionary of GAZETTEERS
-#need to insert uri_id's to point to the authority though the naming authorities dictionary below
+# need to insert uri_id's to point to the authority through the naming authorities dictionary below
 GAZETTEERS = {
     'AAD': {
         'label': 'Australian Antarctic Place Names Gazetteer',

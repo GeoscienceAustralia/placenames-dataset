@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from flask import render_template, Response
-
 import conf
 from pyldapi import Renderer, Profile
 from rdflib import Graph, URIRef, RDF, XSD, Namespace, Literal, BNode
@@ -15,10 +14,8 @@ rdggs = dggs.RHEALPixDGGS()
 
 class Place(Renderer):
     """
-    This class represents a placename and methods in this class allow a placename to be loaded from the GA placenames
+    This class represents a place and methods in this class allow a place to be loaded from the GA placenames
     database and to be exported in a number of formats including RDF, according to the 'PlaceNames Ontology'
-
-    [[and an expression of the Dublin Core ontology, HTML, XML in the form according to the AS4590 XML schema.]]??
     """
 
     def __init__(self, request, uri):
@@ -89,7 +86,7 @@ class Place(Renderer):
         self.modifiedDate = None
 
         self.hasPronunciation = None   # None == don't display
-        # pronunciation will only be displayed on webpage if it exists
+        # pronunciation will only be displayed on the webpage if it exists
 
         q = '''
             SELECT 

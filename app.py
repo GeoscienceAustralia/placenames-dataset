@@ -1,3 +1,7 @@
+'''
+This module starts the Linked Data API
+'''
+
 import logging
 from flask import Flask
 from controller import routes

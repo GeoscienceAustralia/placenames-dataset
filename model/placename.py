@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from flask import render_template, Response
-
 import conf
 from pyldapi import Renderer, Profile
 from rdflib import Graph, URIRef, RDF, Namespace, Literal, BNode
@@ -17,8 +16,6 @@ class Placename(Renderer):
     """
     This class represents a placename and methods in this class allow a placename to be loaded from the GA placenames
     database and to be exported in a number of formats including RDF, according to the 'PlaceNames Ontology'
-
-    [[and an expression of the Dublin Core ontology, HTML, XML in the form according to the AS4590 XML schema.]]??
     """
 
     def __init__(self, request, uri):
