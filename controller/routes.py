@@ -9,6 +9,9 @@ routes = Blueprint('controller', __name__)
 
 DEFAULT_ITEMS_PER_PAGE=50
 
+@routes.route('/fsdf_home', strict_slashes=True)
+def fsdf_home():
+    return render_template('fsdf_home.html')
 
 @routes.route('/', strict_slashes=True)
 def home():

@@ -43,6 +43,7 @@
             {% for nav in navs %}
                 {{ nav|safe }}
             {% endfor %}
+            <a href="{{ url_for('controller.fsdf_home') }}">FSDF Home&nbsp&nbsp</a>
             <a href="{{ url_for('controller.home') }}">Home</a> /
             <a href="{{ url_for('controller.placenames') }}">Place Names Register</a> /
             <a href="{{ url_for('controller.places') }}">Places Register</a> /
