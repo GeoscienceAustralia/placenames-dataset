@@ -30,7 +30,7 @@ def ttl():
 
 
 @routes.route('/placename/')
-def placenames():
+def placename():
     # Search specific items using keywords
     search_string = request.values.get('search')
 
@@ -85,7 +85,7 @@ def placenames():
 
 
 @routes.route('/place/')
-def places():
+def place():
     # Search specific items using keywords
     search_string = request.values.get('search')
     # get the total register count from the XML API
@@ -157,13 +157,13 @@ def show_map():
     return folium_map.get_root().render()
 
 
-@routes.route('/placenames/<string:placename_id>')
-def placename(placename_id):
+@routes.route('/placename/<string:placename_id>')
+def placename_item(placename_id):
     pn = Placename(request, request.base_url)
     return pn.render()
 
 
-@routes.route('/places/<string:placename_id>')
-def place(placename_id):
+@routes.route('/place/<string:placename_id>')
+def place_item(placename_id):
     pn = Place(request, request.base_url)
     return pn.render()
