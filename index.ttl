@@ -1,0 +1,47 @@
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix geo: <http://www.opengis.net/ont/geosparql#> .
+@prefix loci: <https://linked.data.gov.au/def/loci#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix reg: <http://purl.org/linked-data/registry#> .
+@prefix sdo: <https://schema.org/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix vcard: <http://www.w3.org/2006/vcard/ns#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+
+<https://linked.data.gov.au/dataset/placenames> a dcat:Dataset ;
+  dcterms:conformsTo <https://linked.data.gov.au/def/loci-dp> ;
+  dcterms:created "2020-07-01"^^xsd:date ;
+  dcterms:creator <https://linked.data.gov.au/org/ga> ;
+  dcterms:identifier "placenames"^^xsd:token ;
+  dcterms:license <http://purl.org/NET/rdflicense/cc-by4.0> ;
+  dcterms:modified "2021-04-19"^^xsd:date ;
+  dcterms:publisher <https://linked.data.gov.au/def/placenames>  ;
+  dcterms:spatial [
+      a dcterms:Location ;
+      dcat:bbox "POLYGON ((0 0, -180 -90, 180 -90, 180 90, 0 0))"^^geo:wktLiteral ;
+    ] ;
+  skos:definition "A Linked Data representation of the content of the  National Composite Gazetteer of Australia (NCGA) represented according to the placenames ontology. This is derived from the NCGA product. " ;
+  skos:prefLabel "National Composite Gazetteer of Australia " ;
+  dcat:contactPoint [
+      a vcard:Individual ;
+      vcard:fn "Tina Yang" ;
+      vcard:hasEmail "tina.yang@ga.gov.au"^^xsd:anyURI ;
+    ] ;
+  dcat:keyword "placenames",
+      "NCGA",
+      "National Composite Gazetteer of Australia ",
+      "Australia",
+      "SRS" ;
+  dcat:landingPage <https://linked.data.gov.au/dataset/placenames> ;
+  prov:asInBundle <https://linked.data.gov.au/dataset/placenames/bundle> ;
+  prov:wasDerivedFrom <https://xxx> .
+
+
+<https://linked.data.gov.au/dataset/placenames/bundle> a prov:Bundle .
+
+<https://xxx> a dcat:Dataset .
+
+<https://linked.data.gov.au/org/ga> a sdo:Organization ;
+    reg:register <https://linked.data.gov.au/org/> .

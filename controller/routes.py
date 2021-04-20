@@ -4,6 +4,8 @@ from model.place import Place
 from pyldapi import ContainerRenderer
 import conf
 import folium
+from rdflib import Graph
+
 print(__name__)
 routes = Blueprint('controller', __name__)
 
@@ -17,8 +19,17 @@ def fsdf_home():
 def home():
     return render_template('home.html')
 
+@routes.route('/index.ttl', strict_slashes=True)
+def ttl():
+    # return render_template('index.ttl')
+    g = Graph()
+    g.parse('index.ttl', format='turtle')
+    return Response(
+                g.serialize(format='turtle'),
+                mimetype='text/turtle')
 
-@routes.route('/placenames/')
+
+@routes.route('/placename/')
 def placenames():
     # Search specific items using keywords
     search_string = request.values.get('search')
@@ -73,7 +84,7 @@ def placenames():
                             ).render()
 
 
-@routes.route('/places/')
+@routes.route('/place/')
 def places():
     # Search specific items using keywords
     search_string = request.values.get('search')
