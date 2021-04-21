@@ -23,14 +23,14 @@ def home():
 def ttl():
     # return render_template('index.ttl')
     g = Graph()
-    g.parse('index.ttl', format='turtle')
+    g.parse('placenames-dataset/index.ttl', format='turtle')
     return Response(
                 g.serialize(format='turtle'),
                 mimetype='text/turtle')
 
 
-@routes.route('/placename/')
-def placename():
+@routes.route('/collections/placenames/')
+def placenames():
     # Search specific items using keywords
     search_string = request.values.get('search')
 
@@ -84,8 +84,8 @@ def placename():
                             ).render()
 
 
-@routes.route('/place/')
-def place():
+@routes.route('/collections/places/')
+def places():
     # Search specific items using keywords
     search_string = request.values.get('search')
     # get the total register count from the XML API
@@ -157,13 +157,13 @@ def show_map():
     return folium_map.get_root().render()
 
 
-@routes.route('/placename/<string:placename_id>')
-def placename_item(placename_id):
+@routes.route('/collections/placenames/items/<string:placename_id>')
+def placenames_item(placename_id):
     pn = Placename(request, request.base_url)
     return pn.render()
 
 
-@routes.route('/place/<string:placename_id>')
-def place_item(placename_id):
+@routes.route('/collections/places/items/<string:place_id>')
+def places_item(place_id):
     pn = Place(request, request.base_url)
     return pn.render()
