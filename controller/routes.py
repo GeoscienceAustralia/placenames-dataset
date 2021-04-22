@@ -4,7 +4,7 @@ from model.place import Place
 from pyldapi import ContainerRenderer
 import conf
 import folium
-from rdflib import Graph
+import os
 
 print(__name__)
 routes = Blueprint('controller', __name__)
@@ -20,13 +20,10 @@ def home():
     return render_template('home.html')
 
 @routes.route('/index.ttl', strict_slashes=True)
-def ttl():
-    # return render_template('index.ttl')
-    g = Graph()
-    g.parse('placenames-dataset/index.ttl', format='turtle')
-    return Response(
-                g.serialize(format='turtle'),
-                mimetype='text/turtle')
+def dataset_ttl():
+    file = 'placenames.ttl'
+    ttl_txt = open(os.path.join(conf.APP_DIR, 'view', file), 'rb').read().decode('utf-8')
+    return Response(ttl_txt, mimetype='text/turtle')
 
 
 @routes.route('/collections/placenames/')

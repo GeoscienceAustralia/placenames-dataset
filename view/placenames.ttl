@@ -22,8 +22,8 @@
       a dcterms:Location ;
       dcat:bbox "POLYGON ((0 0, -180 -90, 180 -90, 180 90, 0 0))"^^geo:wktLiteral ;
     ] ;
-  skos:definition "A Linked Data representation of the content of the  National Composite Gazetteer of Australia (NCGA) represented according to the placenames ontology. This is derived from the NCGA product. " ;
-  skos:prefLabel "National Composite Gazetteer of Australia " ;
+  skos:definition "A Linked Data representation of the content of the  National Composite Gazetteer of Australia (NCGA) represented according to the placenames ontology. This is derived from the NCGA product. "@en ;
+  skos:prefLabel "National Composite Gazetteer of Australia "@en ;
   dcat:contactPoint [
       a vcard:Individual ;
       vcard:fn "Tina Yang" ;
