@@ -32,6 +32,10 @@ class Place(Renderer):
 
         super(Place, self).__init__(request, uri, views, 'pn')
 
+        # DGGS_uri = 'https://fsdf.org.au/dataset/auspix/collections/auspix/items/'
+        DGGS_uri = 'https://linked.data.gov.au/dataset/auspix/'
+        resolution = 9
+
         self.id = uri.split('/')[-1]
         self.auth_id = self.id.split('_')[-1]
 
@@ -134,8 +138,6 @@ class Place(Renderer):
             self.supplyDate = placename[2]
 
             # DGGS function
-            DGGS_uri = 'http://ec2-52-63-73-113.ap-southeast-2.compute.amazonaws.com/AusPIX-DGGS-dataset/ausPIX/'
-            resolution = 9
             coords = (self.x, self.y)
             self.thisDGGSCell = rdggs.cell_from_point(resolution, coords, plane=False)  #false = on the elipsoidal curve
             self.thisCell['label'] = str(self.thisDGGSCell)

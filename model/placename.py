@@ -41,7 +41,8 @@ class Placename(Renderer):
 
         super(Placename, self).__init__(request, uri, views, 'NCGA')
 
-        DGGS_uri = 'https://fsdf.org.au/dataset/auspix-dggs/ausPIX/'
+        # DGGS_uri = 'https://fsdf.org.au/dataset/auspix/collections/auspix/items/'
+        DGGS_uri = 'https://linked.data.gov.au/dataset/auspix/'
         resolution = 9
 
         self.id = uri.split('/')[-1]
